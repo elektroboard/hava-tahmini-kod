@@ -1,0 +1,1242 @@
+<meta name="dash-one-writer">
+<style>
+  .atm { display: grid; gap: var(--cds-gap-xl); max-width: 1080px; }
+  .atm h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; text-wrap: balance; }
+  .atm h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0 0 var(--cds-gap-xs); text-wrap: balance; }
+  .atm-bas { display: grid; gap: var(--cds-gap-sm); }
+  .atm-ozet { font-size: var(--cds-font-size-heading); margin: 0; max-width: 68ch; line-height: 1.45; }
+  .atm-ozet b, .atm-not b { font-variant-numeric: tabular-nums; }
+  .atm-not { color: var(--color-fg-muted); margin: 0; max-width: 72ch; line-height: 1.5; }
+  .atm-bolum { display: grid; gap: var(--cds-gap-md); }
+  .atm-gunler { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--cds-gap-md); min-height: 180px; }
+  .atm-kart { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md); display: grid; gap: var(--cds-gap-sm); align-content: start; }
+  .atm-kart-gun { font-weight: var(--cds-font-weight-medium); }
+  .atm-kart-tarih { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .atm-hadise { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); min-height: 1.3em; }
+  .atm-satir { display: grid; grid-template-columns: 4.2em 1fr; align-items: baseline; gap: var(--cds-gap-xs); font-variant-numeric: tabular-nums; }
+  .atm-satir .etiket { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); text-transform: uppercase; letter-spacing: .04em; }
+  .atm-deger { font-size: var(--cds-font-size-heading); }
+  .atm-deger .ayrac { color: var(--color-fg-muted); padding: 0 .2em; }
+  .atm-fark { font-size: var(--cds-font-size-caption); padding: 2px 8px; border-radius: 999px; justify-self: start; background: color-mix(in srgb, var(--color-warn) 18%, transparent); color: var(--color-fg); }
+  .atm-yagis { display: grid; gap: 4px; }
+  .atm-yagis-bar { height: 6px; border-radius: 3px; background: var(--color-border-line); overflow: hidden; }
+  .atm-yagis-bar > i { display: block; height: 100%; }
+  .atm-yagis-metin { font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+  .atm-grafik { position: relative; min-height: 280px; }
+  .atm-grafik svg { display: block; width: 100%; overflow: visible; }
+  .atm-grafik text { font-size: var(--cds-font-size-caption); fill: var(--cds-text-secondary); }
+  .atm-grafik .tick line { stroke: var(--cds-chart-grid); }
+  .atm-grafik .domain { stroke: var(--cds-chart-axis); }
+  .atm-ipucu { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); box-shadow: var(--cds-shadow-popover); border-radius: var(--cds-radius); padding: var(--cds-pad-sm); font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; white-space: nowrap; z-index: 2; }
+  .atm-ipucu b { display: block; margin-bottom: 2px; }
+  .atm-lejant { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs) var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .atm-lejant span { display: inline-flex; align-items: center; gap: 6px; }
+  .atm-lejant i { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+  .atm-lejant i.band { height: 10px; opacity: .25; }
+  .atm-tablo-kap { overflow-x: auto; }
+  .atm-tablo { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+  .atm-tablo th, .atm-tablo td { padding: 6px 10px; text-align: right; border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
+  .atm-tablo th:first-child, .atm-tablo td:first-child { text-align: left; }
+  .atm-tablo thead th { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-weight: var(--cds-font-weight-medium); }
+  .atm-iyi { color: var(--color-ok); font-weight: var(--cds-font-weight-medium); }
+  .atm-bos { background: var(--color-panel); border: 1px dashed var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); margin: 0; color: var(--color-fg-muted); line-height: 1.5; }
+  .atm-aralik { display: flex; flex-wrap: wrap; align-items: end; gap: var(--cds-gap-md); }
+  .atm-alan { display: grid; gap: 4px; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .atm-alan input { font: inherit; font-size: var(--cds-font-size-body); color: var(--color-fg); background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: 6px 8px; }
+  .atm-hazir { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); }
+  .atm-hazir button { font: inherit; font-size: var(--cds-font-size-caption); color: var(--color-fg); background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+  .atm-hazir button:hover { border-color: var(--color-fg-muted); }
+  .atm-hazir button.secili { background: var(--color-fg); color: var(--color-bg); border-color: var(--color-fg); }
+  .atm-hazir button:focus-visible, .atm-alan input:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 2px; }
+  .atm-istatistik { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--cds-gap-md); }
+  .atm-kutu { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md); display: grid; gap: 4px; align-content: start; }
+  .atm-kutu .etiket { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); text-transform: uppercase; letter-spacing: .04em; }
+  .atm-buyuk { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); font-variant-numeric: tabular-nums; }
+  .atm-buyuk b { font-weight: 400; }
+  .atm-alt { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+  .atm-h3 { font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); margin: 0; }
+  .atm-blok { display: grid; gap: var(--cds-gap-sm); }
+  .atm-kutu-ileri { border-style: dashed; }
+  .atm details { color: var(--color-fg-muted); line-height: 1.55; max-width: 72ch; }
+  .atm details summary { cursor: pointer; color: var(--color-fg); }
+  .atm details ul { padding-left: 1.2em; }
+  .atm-ust { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); text-transform: uppercase; letter-spacing: .05em; }
+  .atm-yarin { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cds-gap-lg); background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-xl); }
+  .atm-yarin-ikon { flex: 0 0 auto; min-width: 112px; min-height: 112px; }
+  .atm-yarin-metin { flex: 1 1 240px; min-width: 0; display: grid; gap: var(--cds-gap-xs); }
+  .atm-yarin-metin p { margin: 0; }
+  .atm-yarin-hava { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); }
+  .atm-yarin-sic { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: calc(var(--cds-font-size-title) * 2); line-height: 1.05; font-variant-numeric: tabular-nums; }
+  .atm-yarin-sic .gece { color: var(--color-fg-muted); font-size: .6em; }
+  .atm-yarin-sic .ayrac { color: var(--color-fg-muted); font-size: .5em; padding: 0 .25em; }
+  .atm-yarin-cumle { font-size: var(--cds-font-size-heading); }
+  .atm-oneriler { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); margin-top: var(--cds-gap-xs); }
+  .atm-cip { font-size: var(--cds-font-size-caption); padding: 5px 12px; border-radius: 999px; border: 1px solid var(--color-border-line); background: var(--color-bg); }
+  .atm-serit { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(96px, 1fr); gap: var(--cds-gap-sm); overflow-x: auto; padding-bottom: 4px; min-height: 190px; }
+  .atm-serit-uzak { min-height: 160px; }
+  .atm-gun { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-sm); display: grid; justify-items: center; gap: 3px; text-align: center; align-content: start; }
+  .atm-serit-uzak .atm-gun { border-style: dashed; }
+  .atm-gun .ad { font-weight: var(--cds-font-weight-medium); }
+  .atm-gun .tarih, .atm-gun .gok, .atm-gun .mgm { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .atm-gun .gok { min-height: 2.6em; line-height: 1.3; }
+  .atm-gun .sic { display: flex; gap: 6px; align-items: baseline; font-variant-numeric: tabular-nums; }
+  .atm-gun .max { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); }
+  .atm-gun .min { color: var(--color-fg-muted); }
+  .atm-gun .yagis { display: inline-flex; align-items: center; gap: 4px; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; color: var(--color-fg-muted); }
+  .atm-gun .yagis.yuksek { color: var(--color-fg); font-weight: var(--cds-font-weight-medium); }
+  .atm-dikkat { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--cds-gap-sm); }
+  .atm-dikkat li { display: flex; gap: var(--cds-gap-md); align-items: flex-start; background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md); line-height: 1.45; }
+  .atm-dikkat li .ikon { flex: 0 0 auto; }
+  .atm-dikkat li b { display: block; }
+  .atm-ara { margin: var(--cds-gap-lg) 0 0; padding-top: var(--cds-pad-lg); border-top: 1px solid var(--color-border-line); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); text-transform: uppercase; letter-spacing: .05em; font-weight: var(--cds-font-weight-medium); }
+  .atm-sehirler { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); margin-bottom: var(--cds-gap-sm); }
+  .atm-sehirler button { font: inherit; font-weight: var(--cds-font-weight-medium); color: var(--color-fg); background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: 999px; padding: 8px 16px; cursor: pointer; }
+  .atm-sehirler button:hover { border-color: var(--color-fg-muted); }
+  .atm-sehirler button:disabled { opacity: .45; cursor: not-allowed; }
+  .atm-sehirler button.secili { background: var(--color-fg); color: var(--color-bg); border-color: var(--color-fg); }
+  .atm-sehirler button:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 2px; }
+
+  /* Akıllı ev paneli görünümü: 12 sütunlu kart ızgarası, yuvarlak kartlar, durum ışıkları */
+  .atm { max-width: 1240px; gap: var(--cds-gap-lg); }
+  .atm-izgara { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; align-items: start; }
+  .atm-izgara > * { grid-column: span 12; min-width: 0; }
+  .atm-izgara > #yarin { grid-column: span 7; align-self: stretch; }
+  .atm-izgara > #sensorler { grid-column: span 5; }
+  .atm-izgara > #dikkat, .atm-izgara > #uzak, .atm-izgara > #karne, .atm-izgara > #gecmis-test { grid-column: span 6; }
+  @media (max-width: 900px) { .atm-izgara > * { grid-column: span 12 !important; } }
+
+  .atm-kart { background: var(--color-panel); border: 1px solid color-mix(in srgb, var(--color-border-line) 70%, transparent); border-radius: 22px; padding: 18px 20px; box-shadow: 0 1px 2px color-mix(in srgb, var(--color-fg) 6%, transparent), 0 10px 28px color-mix(in srgb, var(--color-fg) 6%, transparent); }
+  .atm-kart.atm-bolum { gap: var(--cds-gap-sm); }
+  .atm-kart h2 { font-size: 13px; font-weight: var(--cds-font-weight-medium); text-transform: uppercase; letter-spacing: .07em; color: var(--color-fg-muted); margin: 0; }
+  .atm-kart .atm-not { font-size: var(--cds-font-size-caption); }
+
+  .atm-bas { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--cds-gap-sm) var(--cds-gap-lg); }
+  .atm-bas h1 { font-family: var(--font-anthropic-sans); font-weight: 700; font-size: calc(var(--cds-font-size-title) * 1.15); letter-spacing: -.01em; order: 1; flex-basis: 100%; }
+  .atm-bas .atm-ust { order: 0; }
+  .atm-bas > .atm-not { order: 2; flex: 1 1 320px; margin: 0; }
+  .atm-sehirler { order: 3; margin: 0; background: color-mix(in srgb, var(--color-fg) 6%, transparent); padding: 4px; border-radius: 999px; gap: 2px; }
+  .atm-sehirler button { border: 0; background: transparent; padding: 8px 18px; }
+  .atm-sehirler button.secili { background: var(--color-panel); color: var(--color-fg); box-shadow: 0 1px 4px color-mix(in srgb, var(--color-fg) 18%, transparent); }
+
+  .atm-yarin { background: linear-gradient(140deg, color-mix(in srgb, var(--color-warn) 16%, var(--color-panel)) 0%, var(--color-panel) 55%); padding: 24px 26px; }
+  .atm-yarin-sic { font-family: var(--font-anthropic-sans); font-weight: 300; letter-spacing: -.02em; }
+  .atm-yarin-sic .gunduz { font-weight: 600; }
+  .atm-cip { background: color-mix(in srgb, var(--color-fg) 6%, transparent); border: 0; }
+
+  .atm-sensorler { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .atm-sensor { display: grid; gap: 6px; align-content: start; padding: 16px 18px; min-height: 118px; }
+  .atm-sensor .ust { display: flex; align-items: center; gap: 8px; }
+  .atm-sensor .etiket { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-weight: var(--cds-font-weight-medium); }
+  .atm-sensor .deger { font-size: calc(var(--cds-font-size-title) * 1.05); font-weight: 600; letter-spacing: -.01em; font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .atm-sensor .alt { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.35; }
+  .isik { width: 10px; height: 10px; border-radius: 50%; flex: 0 0 auto; background: var(--color-fg-muted); }
+  .isik.ok { background: var(--color-ok); box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-ok) 22%, transparent); }
+  .isik.uyari { background: var(--color-warn); box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-warn) 24%, transparent); }
+  .isik.kritik { background: var(--color-bad); box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-bad) 22%, transparent); }
+  .isik.pasif { opacity: .4; }
+  @media (prefers-reduced-motion: no-preference) { .isik.kritik { animation: atm-nabiz 2.4s ease-in-out infinite; } }
+  @keyframes atm-nabiz { 50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--color-bad) 10%, transparent); } }
+
+  .atm-gun, .atm-dikkat li, .atm-kutu { background: color-mix(in srgb, var(--color-fg) 4%, transparent); border: 0; border-radius: 16px; }
+  .atm-serit-uzak .atm-gun { border: 1px dashed var(--color-border-line); background: transparent; }
+  .atm-kutu-ileri { border: 1px dashed var(--color-border-line); background: transparent; }
+  .atm-ara { grid-column: span 12; border-top: 0; padding-top: var(--cds-gap-sm); margin: 0; }
+  .atm-tablo-kap { background: color-mix(in srgb, var(--color-fg) 3%, transparent); border-radius: 14px; }
+  .atm details.atm-kart { color: var(--color-fg-muted); }
+</style>
+
+<div class="atm" data-read lang="tr">
+  <header class="atm-bas" id="baslik">
+    <div class="atm-sehirler" role="group" aria-label="Şehir seçin" id="sehir-secici">
+      <button type="button" data-sehir="ankara">Ankara</button>
+      <button type="button" data-sehir="istanbul">İstanbul</button>
+      <button type="button" data-sehir="izmir">İzmir</button>
+      <button type="button" data-sehir="konya">Konya</button>
+    </div>
+    <p class="atm-ust">Hava durumu · <span data-draw="guncelleme" data-source="ileri">—</span></p>
+    <h1 data-draw="sehir-baslik">—</h1>
+    <p class="atm-not">Meteoroloji'nin (MGM) resmî tahmini ile kendi geliştirdiğimiz sistemin tahmini bir arada.</p>
+  </header>
+
+  <div class="atm-izgara">
+
+  <section class="atm-kart atm-yarin" id="yarin">
+    <div class="atm-yarin-ikon" data-draw="yarin-ikon" data-source="ileri"></div>
+    <div class="atm-yarin-metin">
+      <p class="atm-ust">Yarın · <span data-draw="yarin-tarih" data-source="ileri">—</span></p>
+      <p class="atm-yarin-hava" data-draw="yarin-hava" data-source="ileri">—</p>
+      <p class="atm-yarin-sic"><span class="gunduz" data-draw="yarin-max" data-source="ileri" data-field="en_yuksek">—</span><span class="ayrac">/</span><span class="gece" data-draw="yarin-min" data-source="ileri" data-field="en_dusuk">—</span></p>
+      <p class="atm-yarin-cumle" data-draw="yarin-cumle" data-source="ileri">—</p>
+      <div class="atm-oneriler" data-draw="yarin-oneri" data-source="ileri"></div>
+      <p class="atm-not" data-draw="yarin-mgm" data-source="ileri"></p>
+    </div>
+  </section>
+
+  <section class="atm-sensorler" id="sensorler" aria-label="Kısa durum">
+    <div class="atm-kart atm-sensor" id="sensor-yagis">
+      <div class="ust"><span class="isik" data-draw="isik-yagis"></span><span class="etiket">Yarın yağmur</span></div>
+      <div class="deger" data-draw="sensor-yagis" data-source="ileri" data-field="yagis_olasiligi">—</div>
+      <div class="alt" data-draw="sensor-yagis-alt">—</div>
+    </div>
+    <div class="atm-kart atm-sensor" id="sensor-don">
+      <div class="ust"><span class="isik" data-draw="isik-don"></span><span class="etiket">Don gecesi, 7 gün</span></div>
+      <div class="deger" data-draw="sensor-don">—</div>
+      <div class="alt" data-draw="sensor-don-alt">—</div>
+    </div>
+    <div class="atm-kart atm-sensor" id="sensor-yagisli">
+      <div class="ust"><span class="isik" data-draw="isik-yagisli"></span><span class="etiket">Yağışlı gün, 7 gün</span></div>
+      <div class="deger" data-draw="sensor-yagisli">—</div>
+      <div class="alt" data-draw="sensor-yagisli-alt">—</div>
+    </div>
+    <div class="atm-kart atm-sensor" id="sensor-mgm">
+      <div class="ust"><span class="isik" data-draw="isik-mgm"></span><span class="etiket">MGM ile yarın</span></div>
+      <div class="deger" data-draw="sensor-mgm">—</div>
+      <div class="alt" data-draw="sensor-mgm-alt">—</div>
+    </div>
+  </section>
+
+  <section class="atm-kart atm-bolum" id="gunler">
+    <h2>Önümüzdeki 7 gün</h2>
+    <div class="atm-serit" data-draw="serit-7" data-source="ileri"></div>
+    <p class="atm-not">Büyük rakam gündüz, küçük rakam gece sıcaklığı. Damla, yağmur ya da kar ihtimalidir. İlk 5 günde MGM'nin tahmini de altta yazılıdır.</p>
+  </section>
+
+  <section class="atm-kart atm-bolum" id="dikkat">
+    <h2>Dikkat edilecekler</h2>
+    <ul class="atm-dikkat" data-draw="dikkat" data-source="ileri"></ul>
+  </section>
+
+  <section class="atm-kart atm-bolum" id="uzak">
+    <h2>Daha uzak günler</h2>
+    <p class="atm-not">Bir haftadan sonrası kesin değildir; genel gidişat olarak okuyun.</p>
+    <div class="atm-serit atm-serit-uzak" data-draw="serit-uzak" data-source="ileri"></div>
+  </section>
+
+  <h2 class="atm-ara" id="merakli">Meraklısı için</h2>
+
+  <section class="atm-kart atm-bolum" id="olcumler">
+    <h2>Geçmiş ve gelecek günlere göz atın</h2>
+    <p class="atm-not">Geçmiş ya da gelecek, istediğiniz aralığı seçin. Geçmiş günler istasyon ölçümüdür. Gelecekte ilk 7 gün bizim tahminimiz, 14. güne kadar modellerin düşük güvenli tahmini, daha ötesi geçmiş yıllara göre normal aralıktır; bu sonuncusu tahmin değil, o günlerin genelde nasıl geçtiğidir.</p>
+    <div class="atm-aralik" id="tarih-araligi">
+      <label class="atm-alan" for="tarih-bas">Başlangıç
+        <input type="date" id="tarih-bas" data-draw="tarih-bas" data-source="gecmis">
+      </label>
+      <label class="atm-alan" for="tarih-bit">Bitiş
+        <input type="date" id="tarih-bit" data-draw="tarih-bit" data-source="gecmis">
+      </label>
+      <div class="atm-hazir" role="group" aria-label="Hazır aralıklar">
+        <button type="button" data-gun="30">Son 30 gün</button>
+        <button type="button" data-gun="90">Son 3 ay</button>
+        <button type="button" data-gun="365">Son 1 yıl</button>
+        <button type="button" data-gun="yil">Bu yıl</button>
+        <button type="button" data-gun="tumu">Tüm geçmiş</button>
+        <button type="button" data-gun="ileri15">Önümüzdeki 14 gün</button>
+        <button type="button" data-gun="gelecek-ay">Gelecek ay</button>
+      </div>
+    </div>
+    <p class="atm-not">Seçili aralık: <b data-draw="aralik-metin">—</b>. <span data-draw="aralik-kapsam"></span></p>
+    <span data-draw="aralik-gorunum" data-source="aralik_ozet beklenti_ozet"></span>
+    <div class="atm-blok" id="beklenti-blok" hidden>
+      <h3 class="atm-h3">Bu tarihlerde ne bekleniyor?</h3>
+      <p class="atm-not"><span data-draw="beklenti-kapsam"></span></p>
+      <div class="atm-istatistik">
+        <div class="atm-kutu atm-kutu-ileri"><span class="etiket">Gündüzler, beklenen ortalama</span><span class="atm-buyuk"><b data-draw="bek-max" data-source="beklenti_ozet" data-field="beklenen_ort_en_yuksek" data-row="0">—</b> °C</span></div>
+        <div class="atm-kutu atm-kutu-ileri"><span class="etiket">Geceler, beklenen ortalama</span><span class="atm-buyuk"><b data-draw="bek-min" data-source="beklenti_ozet" data-field="beklenen_ort_en_dusuk" data-row="0">—</b> °C</span></div>
+        <div class="atm-kutu atm-kutu-ileri"><span class="etiket">Beklenen yağışlı gün</span><span class="atm-buyuk">≈ <b data-draw="bek-yagis" data-source="beklenti_ozet" data-field="beklenen_yagisli_gun" data-row="0">—</b></span><span class="atm-alt">1 mm ve üzeri</span></div>
+        <div class="atm-kutu atm-kutu-ileri"><span class="etiket">Beklenen don gecesi</span><span class="atm-buyuk">≈ <b data-draw="bek-don" data-source="beklenti_ozet" data-field="beklenen_don_gecesi" data-row="0">—</b></span><span class="atm-alt">En düşük 0 °C'nin altında</span></div>
+      </div>
+    </div>
+    <h3 class="atm-h3" id="olculen-baslik">Bu tarihlerde gerçekte ne oldu? (istasyon ölçümü)</h3>
+    <div class="atm-istatistik" id="aralik-istatistik">
+      <div class="atm-kutu"><span class="etiket">Gündüzlerin ortalaması</span><span class="atm-buyuk"><b data-draw="ist-ort-max" data-source="aralik_ozet" data-field="ortalama_en_yuksek" data-row="0">—</b> °C</span></div>
+      <div class="atm-kutu"><span class="etiket">Gecelerin ortalaması</span><span class="atm-buyuk"><b data-draw="ist-ort-min" data-source="aralik_ozet" data-field="ortalama_en_dusuk" data-row="0">—</b> °C</span></div>
+      <div class="atm-kutu"><span class="etiket">En sıcak gün</span><span class="atm-buyuk"><b data-draw="ist-max" data-source="aralik_ozet" data-field="en_sicak" data-row="0">—</b> °C</span><span class="atm-alt" data-draw="ist-max-tarih" data-source="aralik_ozet" data-field="en_sicak_tarih" data-row="0">—</span></div>
+      <div class="atm-kutu"><span class="etiket">En soğuk gece</span><span class="atm-buyuk"><b data-draw="ist-min" data-source="aralik_ozet" data-field="en_soguk" data-row="0">—</b> °C</span><span class="atm-alt" data-draw="ist-min-tarih" data-source="aralik_ozet" data-field="en_soguk_tarih" data-row="0">—</span></div>
+      <div class="atm-kutu"><span class="etiket">Toplam yağış</span><span class="atm-buyuk"><b data-draw="ist-yagis" data-source="aralik_ozet" data-field="toplam_yagis" data-row="0">—</b> mm</span><span class="atm-alt"><span data-draw="ist-yagisli" data-source="aralik_ozet" data-field="yagisli_gun" data-row="0">—</span> yağışlı gün (1 mm ve üzeri)</span></div>
+    </div>
+    <div class="atm-lejant" data-draw="lejant-olcum"></div>
+    <div class="atm-grafik" data-draw="grafik-olcum" data-source="gecmis"></div>
+    <p class="atm-not">Turuncu çizgi gündüzün en yüksek, mavi çizgi gecenin en düşük sıcaklığı. Gri zemin bugünden sonrasını gösterir; zemin koyulaştıkça bilgi belirsizleşir: önce bizim tahmin, sonra modellerin düşük güvenli tahmini, en sonda geçmiş yıllara göre normal. Bir güne dokunursanız ayrıntısı açılır.</p>
+    <details id="grafik-ayrinti"><summary>Veriler nereden geliyor?</summary><p>Ölçümler <span data-draw="istasyon-adi">—</span> istasyonundan gelir: eski yıllar Meteostat arşivinden, son yıllar uluslararası SYNOP raporlarından (Ogimet); arşivde bazı dönemler eksiktir. Normaller 2010'dan geçen yıla kadarki ölçümlerden, o takvim gününün ±7 gününe bakılarak hesaplanır. Uzun aralıklarda haftalık ya da aylık ortalamalar çizilir.</p></details>
+  </section>
+
+  <section class="atm-kart atm-bolum" id="karne">
+    <h2>MGM mi, biz mi? Tahminlerin karnesi</h2>
+    <p class="atm-not">Her gün iki tahmini de kaydediyoruz. Gün geçince gerçekte ölçülen sıcaklıkla karşılaştırıyoruz. "Hata", tahminin ortalama kaç derece şaştığıdır; küçük olan daha iyidir.</p>
+    <span data-draw="karne-durum" data-source="karne"></span>
+    <p class="atm-bos" id="karne-bos">Henüz puanlanacak gün yok. Tahminler 22 Kasım 2026'da kaydedilmeye başladı; her gün ölçümler geldikçe karne dolacak.</p>
+    <div class="atm-tablo-kap" id="karne-tablo" hidden>
+      <table class="atm-tablo" data-source="karne" data-row-key="sehir,kac_gun_once">
+        <thead>
+          <tr>
+            <th data-field="kac_gun_once">Tahmin kaç gün önce</th>
+            <th data-field="en_yuksek_mgm_hata">En yüksek, MGM hatası</th>
+            <th data-field="en_yuksek_bizim_hata">En yüksek, bizim hata</th>
+            <th data-field="en_dusuk_mgm_hata">En düşük, MGM hatası</th>
+            <th data-field="en_dusuk_bizim_hata">En düşük, bizim hata</th>
+            <th data-field="yagis_mgm_dogru_%">Yağış, MGM doğru</th>
+            <th data-field="yagis_bizim_dogru_%">Yağış, bizim doğru</th>
+            <th data-field="en_yuksek_gun">Gün sayısı</th>
+          </tr>
+        </thead>
+        <tbody data-draw="karne-satirlar"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="atm-kart atm-bolum" id="gecmis-test">
+    <h2>Sistemimiz geçmişte ne kadar tuttu?</h2>
+    <p class="atm-not">Sistemimizi bu şehirde 2024-2026 arasındaki <b data-draw="test-gun" data-source="test">—</b> günde denedik: Her gün için o güne kadarki bilgilerle tahmin yaptırıp gerçekte ölçülenle karşılaştırdık. Çizgi ne kadar alçaksa tahmin o kadar isabetli. <span data-draw="test-ozet"></span></p>
+    <div class="atm-lejant" data-draw="lejant-test"></div>
+    <div class="atm-grafik" data-draw="grafik-test" data-source="test"></div>
+  </section>
+
+  <details class="atm-kart" id="nasil-calisir">
+    <summary>Nasıl çalışıyor, sınırları neler?</summary>
+    <ul>
+      <li>Her gün MGM'nin dört il için yayımladığı 5 günlük tahmin, mgm.gov.tr'deki herkese açık sayfalardan okunur.</li>
+      <li>Bizim sistem ECMWF, GFS, ICON, GEM, JMA ve UKMO modellerinin tahminlerini Open-Meteo'dan alır. Her şehir ve her gün sayısı için ayrı bir doğrusal düzeltme, bu tahminleri o şehrin ölçüm istasyonunun 2024-2026 ölçümlerine göre ayarlar.</li>
+      <li>Gerçekleşen değerler, her şehrin ölçüm istasyonunun uluslararası SYNOP raporlarından Ogimet üzerinden alınır. İstanbul için MGM'nin Florya'daki merkez noktasına 1,7 km uzaklıktaki Atatürk Havalimanı istasyonu kullanılır.</li>
+      <li>Yağış "1 mm ve üzeri" olarak sayılır. MGM'nin hadisesinde yağmur, sağanak, kar veya gök gürültüsü geçiyorsa MGM "yağış var" demiş kabul edilir.</li>
+      <li>Sayfa, bilgisayardaki günlük görev çalıştığında güncellenir. Bilgisayar kapalıysa son tahmin gösterilmeye devam eder.</li>
+    </ul>
+  </details>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const yerel = d3.formatLocale({ decimal: ",", thousands: ".", grouping: [3], currency: ["", ""] });
+    const f1 = yerel.format(".1f");
+    const f0 = yerel.format(".0f");
+    const GUN = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
+    const AY = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+    const coz = d3.utcParse("%Y-%m-%d");
+    const sayi = (v) => (v === null || v === undefined || v === "" ? null : +v);
+
+    window.atm = {
+      f1, f0, coz, sayi,
+      derece: (v) => (sayi(v) === null ? "—" : f1(sayi(v))),
+      gunAdi: (s) => GUN[coz(s).getUTCDay()],
+      tarihKisa: (s) => { const d = coz(s); return d.getUTCDate() + " " + AY[d.getUTCMonth()]; },
+      tarihUzun: (s) => { const d = coz(s); return d.getUTCDate() + " " + AY[d.getUTCMonth()] + " " + GUN[d.getUTCDay()]; },
+      tamam: (id) => dash.data(id).status === "ok",
+      bekle: (el, id, mesaj) => {
+        const st = dash.data(id).status;
+        if (st === "loading") { el.classList.add("dash-skeleton"); el.textContent = ""; return true; }
+        el.classList.remove("dash-skeleton");
+        if (st !== "ok") { el.textContent = st === "error" ? (mesaj || "Bu bölüm yüklenemedi.") : "—"; return true; }
+        return false;
+      },
+      lejant: (el, ogeler) => {
+        el.replaceChildren(...ogeler.map(([ad, renk, tur]) => {
+          const s = document.createElement("span");
+          const i = document.createElement("i");
+          if (tur === "band") i.className = "band";
+          if (tur === "nokta") { i.style.width = "9px"; i.style.height = "9px"; i.style.borderRadius = "50%"; }
+          if (tur === "halka") { i.style.width = "10px"; i.style.height = "10px"; i.style.borderRadius = "50%"; i.style.background = "transparent"; i.style.border = "1.5px solid " + renk; }
+          if (tur === "kesik") i.style.background = `repeating-linear-gradient(90deg, ${renk} 0 4px, transparent 4px 7px)`;
+          else i.style.background = renk;
+          s.append(i, document.createTextNode(ad));
+          return s;
+        }));
+      },
+      ipucu: (kap) => {
+        let ip = kap.querySelector(".atm-ipucu");
+        if (!ip) { ip = document.createElement("div"); ip.className = "atm-ipucu"; ip.hidden = true; kap.append(ip); }
+        return {
+          goster(x, y, baslik, satirlar) {
+            const b = document.createElement("b");
+            b.textContent = baslik;
+            ip.replaceChildren(b, ...satirlar.map((t) => { const d = document.createElement("div"); d.textContent = t; return d; }));
+            ip.hidden = false;
+            const w = ip.offsetWidth, h = ip.offsetHeight, W = kap.clientWidth;
+            ip.style.left = Math.max(0, Math.min(W - w, x + 12)) + "px";
+            ip.style.top = Math.max(0, y - h - 8) + "px";
+          },
+          gizle() { ip.hidden = true; },
+        };
+      },
+    };
+  })();
+</script>
+
+<script>
+  (function () {
+    const SEHIR_AD = { ankara: "Ankara", istanbul: "İstanbul", izmir: "İzmir", konya: "Konya" };
+    const ISTASYON = { ankara: "Ankara Merkez (WMO 17130)", istanbul: "Atatürk Havalimanı (WMO 17060)", izmir: "İzmir Bölge (WMO 17220)", konya: "Konya Bölge (WMO 17244)" };
+    window.atmSehir = () => { const s = dash.params().sehir; return SEHIR_AD[s] ? s : "ankara"; };
+    window.atmSehirAd = () => SEHIR_AD[atmSehir()];
+    window.atmIstasyon = () => ISTASYON[atmSehir()];
+    window.atmSatir = (id) => { const d = dash.data(id); return d.status === "ok" && Array.isArray(d.data) ? d.data.filter((r) => r.sehir === atmSehir()) : []; };
+    window.atmYer = (r) => "sehir=" + r.sehir + "&tarih=" + r.tarih;
+  })();
+
+  document.querySelectorAll(".atm-sehirler button").forEach((b) => {
+    b.addEventListener("click", () => { dash.setParams({ sehir: b.dataset.sehir }); dash.setLink(b.dataset.sehir); });
+  });
+  dash.onData(() => {
+    const s = atmSehir();
+    const d = dash.data("ileri");
+    const veriVar = new Set(d.status === "ok" && Array.isArray(d.data) ? d.data.map((r) => r.sehir) : []);
+    document.querySelectorAll(".atm-sehirler button").forEach((b) => {
+      const yok = d.status === "ok" && !veriVar.has(b.dataset.sehir);
+      b.disabled = yok;
+      b.setAttribute("aria-description", yok ? "Veriler hazırlanıyor, yakında eklenecek" : "");
+      b.classList.toggle("secili", b.dataset.sehir === s);
+      b.setAttribute("aria-pressed", String(b.dataset.sehir === s));
+    });
+  });
+  (function () {
+    const h = (location.hash || "").slice(1);
+    if (["ankara", "istanbul", "izmir", "konya"].includes(h) && h !== (dash.params().sehir || "ankara")) dash.setParams({ sehir: h });
+  })();
+  dash.draw("sehir-baslik", (el) => { el.textContent = atmSehirAd(); });
+  dash.draw("istasyon-adi", (el) => { el.textContent = atmIstasyon(); });
+
+  (function () {
+    const NS = "http://www.w3.org/2000/svg";
+    const el = (ad, ozellik, ana) => {
+      const e = document.createElementNS(NS, ad);
+      for (const [k, v] of Object.entries(ozellik)) e.setAttribute(k, v);
+      if (ana) ana.append(e);
+      return e;
+    };
+    const bulut = (g, dx = 0, dy = 0, olcek = 1, renk = "var(--color-fg-muted)") => {
+      const b = el("g", { transform: `translate(${dx} ${dy}) scale(${olcek})` }, g);
+      b.style.fill = renk;
+      el("circle", { cx: 24, cy: 38, r: 9 }, b);
+      el("circle", { cx: 35, cy: 31, r: 12 }, b);
+      el("circle", { cx: 46, cy: 39, r: 8 }, b);
+      el("rect", { x: 15, y: 38, width: 39, height: 10, rx: 5 }, b);
+    };
+    const gunes = (g, cx, cy, r) => {
+      const s = el("g", {}, g);
+      s.style.stroke = "var(--color-warn)";
+      s.style.fill = "var(--color-warn)";
+      el("circle", { cx, cy, r }, s);
+      for (let i = 0; i < 8; i++) {
+        const a = (i * Math.PI) / 4;
+        el("line", { x1: cx + Math.cos(a) * (r + 4), y1: cy + Math.sin(a) * (r + 4), x2: cx + Math.cos(a) * (r + 9), y2: cy + Math.sin(a) * (r + 9), "stroke-width": 3, "stroke-linecap": "round" }, s);
+      }
+    };
+    const damlalar = (g, renk) => {
+      const d = el("g", { "stroke-width": 3, "stroke-linecap": "round" }, g);
+      d.style.stroke = renk;
+      for (const x of [24, 34, 44]) el("line", { x1: x, y1: 52, x2: x - 3, y2: 60 }, d);
+    };
+    const kar = (g) => {
+      const d = el("g", {}, g);
+      d.style.fill = "var(--color-fg)";
+      for (const [x, y] of [[23, 55], [34, 58], [45, 55]]) el("circle", { cx: x, cy: y, r: 2.6 }, d);
+    };
+
+    window.atmIkon = function (tur, boyut, etiket) {
+      const svg = el("svg", { viewBox: "0 0 64 64", width: boyut, height: boyut, role: "img", "aria-label": etiket || tur });
+      if (tur === "gunes") gunes(svg, 32, 32, 12);
+      else if (tur === "az-bulut") { gunes(svg, 24, 22, 9); bulut(svg, 14, 10, 0.75); }
+      else if (tur === "parcali") { gunes(svg, 22, 22, 9); bulut(svg, 4, 2, 0.95); }
+      else if (tur === "bulut") bulut(svg, 0, 0, 1);
+      else if (tur === "yagmur") { bulut(svg, 0, -6, 1); damlalar(svg, dash.colors[0]); }
+      else if (tur === "kar") { bulut(svg, 0, -6, 1); kar(svg); }
+      else if (tur === "firtina") {
+        bulut(svg, 0, -6, 1);
+        const s = el("polygon", { points: "34,40 26,54 33,54 29,63 41,48 34,48 38,40" }, svg);
+        s.style.fill = "var(--color-warn)";
+      } else if (tur === "sis") {
+        const d = el("g", { "stroke-width": 3.5, "stroke-linecap": "round" }, svg);
+        d.style.stroke = "var(--color-fg-muted)";
+        for (const [y, a, b] of [[22, 14, 50], [32, 10, 54], [42, 16, 48], [52, 12, 44]]) el("line", { x1: a, y1: y, x2: b, y2: y }, d);
+      }
+      return svg;
+    };
+
+    // Bir gün için gökyüzü: ilk 5 günde MGM'nin hadisesi, sonra ECMWF hava kodu
+    window.atmGok = function (r) {
+      const p = atm.sayi(r.yagis_olasiligi);
+      if (r.mgm_hadise) {
+        const h = r.mgm_hadise.toLocaleLowerCase("tr");
+        const tur = /gök gürültü/.test(h) ? "firtina" : /kar/.test(h) ? "kar" : /sağanak|yağmur|yağış|çisenti/.test(h) ? "yagmur"
+          : /sis|pus/.test(h) ? "sis" : /çok bulutlu|kapalı/.test(h) ? "bulut" : /parçalı/.test(h) ? "parcali" : /az bulutlu/.test(h) ? "az-bulut"
+          : /açık/.test(h) ? "gunes" : "parcali";
+        return { tur, ad: r.mgm_hadise, kaynak: "MGM" };
+      }
+      const k = atm.sayi(r.hava_kodu);
+      if (k === null) return { tur: "parcali", ad: "Bilgi yok", kaynak: "" };
+      const yagisli = p !== null && p >= 30;
+      if (k === 0) return { tur: "gunes", ad: "Açık", kaynak: "ECMWF" };
+      if (k === 1) return { tur: "az-bulut", ad: "Az bulutlu", kaynak: "ECMWF" };
+      if (k === 2) return { tur: "parcali", ad: "Parçalı bulutlu", kaynak: "ECMWF" };
+      if (k === 3) return { tur: "bulut", ad: "Bulutlu", kaynak: "ECMWF" };
+      if (k === 45 || k === 48) return { tur: "sis", ad: "Sisli", kaynak: "ECMWF" };
+      if (k >= 95) return { tur: "firtina", ad: "Gök gürültülü sağanak", kaynak: "ECMWF" };
+      if ((k >= 71 && k <= 77) || k === 85 || k === 86) return yagisli ? { tur: "kar", ad: "Karlı", kaynak: "ECMWF" } : { tur: "bulut", ad: "Bulutlu, çok hafif kar olabilir", kaynak: "ECMWF" };
+      return yagisli ? { tur: "yagmur", ad: "Yağmurlu", kaynak: "ECMWF" } : { tur: "bulut", ad: "Bulutlu, hafif çisenti olabilir", kaynak: "ECMWF" };
+    };
+
+    window.atmHis = function (t) {
+      if (t === null) return "";
+      return t <= 0 ? "dondurucu" : t <= 6 ? "soğuk" : t <= 12 ? "serin" : t <= 20 ? "ılık" : t <= 28 ? "sıcak" : "çok sıcak";
+    };
+
+    window.atmCumle = function (r) {
+      const s = atm.sayi, mx = s(r.en_yuksek), mn = s(r.en_dusuk), p = s(r.yagis_olasiligi);
+      const gok = atmGok(r);
+      const gece = mn === null ? "" : mn < 0 ? "gece don var" : mn <= 4 ? "gece soğuk" : mn <= 12 ? "gece serin" : "gece ılık";
+      let yagis = "Yağış beklenmiyor.";
+      if (gok.tur === "kar" && p >= 30) yagis = "Kar yağabilir.";
+      else if (p >= 70) yagis = "Yağış bekleniyor.";
+      else if (p >= 40) yagis = "Yağış ihtimali var.";
+      return "Gündüz " + atmHis(mx) + (gece ? ", " + gece : "") + ". " + yagis;
+    };
+
+    window.atmOneriler = function (r) {
+      const s = atm.sayi, mx = s(r.en_yuksek), mn = s(r.en_dusuk), p = s(r.yagis_olasiligi) || 0;
+      const gok = atmGok(r);
+      const o = [];
+      if (gok.tur === "kar" && p >= 30) o.push("Kar olabilir, yollara dikkat");
+      else if (p >= 50) o.push("Şemsiye alın");
+      if (mn !== null && mn < 0) o.push("Gece don: araç camları buzlanabilir");
+      if (mx !== null && mx <= 5) o.push("Kalın giyinin");
+      if (mx !== null && mx >= 32) o.push("Çok sıcak: bol su için");
+      if (!o.length) o.push("Hava sakin görünüyor");
+      return o;
+    };
+
+    window.atmGunEtiketi = function (r) {
+      return +r.kac_gun_sonra === 1 ? "Yarın" : atm.gunAdi(r.tarih);
+    };
+  })();
+
+  dash.draw("guncelleme", (el) => {
+    if (atm.bekle(el, "ileri")) return;
+    const d = atmSatir("ileri");
+    if (!d.length) { el.textContent = "—"; return; }
+    const t = d3.utcFormat("%Y-%m-%d")(d3.utcDay.offset(atm.coz(d[0].tarih), -1));
+    el.textContent = atm.tarihUzun(t) + " günü güncellendi";
+  });
+
+  const atmYarin = () => {
+    const d = atmSatir("ileri");
+    return d.length ? d[0] : null;
+  };
+
+  dash.draw("yarin-ikon", (el) => {
+    const r = atmYarin();
+    if (!r) { el.replaceChildren(); return; }
+    const g = atmGok(r);
+    el.replaceChildren(atmIkon(g.tur, 112, g.ad));
+  });
+  dash.draw("yarin-tarih", (el) => {
+    if (atm.bekle(el, "ileri")) return;
+    const r = atmYarin();
+    el.textContent = r ? atm.tarihUzun(r.tarih) : "—";
+  });
+  dash.draw("yarin-hava", (el) => {
+    if (atm.bekle(el, "ileri", "Tahmin yüklenemedi.")) return;
+    const r = atmYarin();
+    el.textContent = r ? atmGok(r).ad : "—";
+  });
+  dash.draw("yarin-max", (el) => {
+    const r = atmYarin();
+    if (r) el.dataset.where = atmYer(r);
+    el.textContent = r ? atm.f0(+r.en_yuksek) + "°" : "—";
+  });
+  dash.draw("yarin-min", (el) => {
+    const r = atmYarin();
+    if (r) el.dataset.where = atmYer(r);
+    el.textContent = r ? atm.f0(+r.en_dusuk) + "°" : "—";
+  });
+  dash.draw("yarin-cumle", (el) => {
+    const r = atmYarin();
+    el.textContent = r ? atmCumle(r) : "—";
+  });
+  dash.draw("yarin-oneri", (el) => {
+    const r = atmYarin();
+    el.replaceChildren(...(r ? atmOneriler(r) : []).map((t) => { const s = document.createElement("span"); s.className = "atm-cip"; s.textContent = t; return s; }));
+  });
+  dash.draw("yarin-mgm", (el) => {
+    const r = atmYarin();
+    el.replaceChildren();
+    if (!r || atm.sayi(r.mgm_en_yuksek) === null) return;
+    const ayni = Math.abs(+r.mgm_en_yuksek - +r.en_yuksek) < 3 && Math.abs(+r.mgm_en_dusuk - +r.en_dusuk) < 3;
+    const k = (alan) => { const b = document.createElement("b"); b.dataset.source = "ileri"; b.dataset.field = alan; b.dataset.where = atmYer(r); b.textContent = atm.f0(+r[alan]) + "°"; return b; };
+    el.append(document.createTextNode(ayni ? "MGM de benzer düşünüyor: gündüz " : "MGM biraz farklı düşünüyor: gündüz "), k("mgm_en_yuksek"),
+      document.createTextNode(", gece "), k("mgm_en_dusuk"), document.createTextNode("."));
+  });
+
+  // Sensör kartları: değer + durum ışığı (yeşil / sarı / kırmızı)
+  function atmIsik(el, durum) {
+    el.classList.remove("ok", "uyari", "kritik", "pasif");
+    el.classList.add(durum || "pasif");
+  }
+  const atmHafta = () => atmSatir("ileri").filter((r) => +r.kac_gun_sonra <= 7);
+  const atmDonGunleri = () => atmHafta().filter((r) => atm.sayi(r.en_dusuk) !== null && +r.en_dusuk < 0);
+  const atmYagisliGunler = () => atmHafta().filter((r) => (atm.sayi(r.yagis_olasiligi) || 0) >= 50);
+  const atmMgmFark = () => {
+    const r = atmYarin();
+    if (!r || atm.sayi(r.mgm_en_yuksek) === null) return null;
+    return Math.max(Math.abs(+r.mgm_en_yuksek - +r.en_yuksek), Math.abs(+r.mgm_en_dusuk - +r.en_dusuk));
+  };
+
+  dash.draw("sensor-yagis", (el) => {
+    if (atm.bekle(el, "ileri")) return;
+    const r = atmYarin();
+    if (!r || atm.sayi(r.yagis_olasiligi) === null) { el.textContent = "—"; return; }
+    el.dataset.where = atmYer(r);
+    el.textContent = "%" + atm.f0(+r.yagis_olasiligi);
+  });
+  dash.draw("sensor-yagis-alt", (el) => {
+    const r = atmYarin();
+    const p = r ? atm.sayi(r.yagis_olasiligi) : null;
+    el.textContent = p === null ? "—" : p >= 60 ? "Şemsiye alın" : p >= 30 ? "Hafif ihtimal" : "Beklenmiyor";
+  });
+  dash.draw("isik-yagis", (el) => {
+    const r = atmYarin();
+    const p = r ? atm.sayi(r.yagis_olasiligi) : null;
+    atmIsik(el, p === null ? "pasif" : p >= 60 ? "kritik" : p >= 30 ? "uyari" : "ok");
+  });
+
+  dash.draw("sensor-don", (el) => {
+    if (atm.bekle(el, "ileri")) return;
+    el.textContent = String(atmDonGunleri().length);
+  });
+  dash.draw("sensor-don-alt", (el) => {
+    const g = atmDonGunleri();
+    if (!g.length) { el.textContent = "Don beklenmiyor"; return; }
+    const en = g.reduce((a, b) => (+b.en_dusuk < +a.en_dusuk ? b : a));
+    el.textContent = "En soğuğu " + atmGunEtiketi(en) + " " + atm.f0(+en.en_dusuk) + "°";
+  });
+  dash.draw("isik-don", (el) => {
+    const n = atmDonGunleri().length;
+    atmIsik(el, !atm.tamam("ileri") ? "pasif" : n >= 3 ? "kritik" : n >= 1 ? "uyari" : "ok");
+  });
+
+  dash.draw("sensor-yagisli", (el) => {
+    if (atm.bekle(el, "ileri")) return;
+    el.textContent = String(atmYagisliGunler().length);
+  });
+  dash.draw("sensor-yagisli-alt", (el) => {
+    const g = atmYagisliGunler();
+    el.textContent = g.length ? g.map((r) => atmGunEtiketi(r)).join(", ") : "Kuru bir hafta";
+  });
+  dash.draw("isik-yagisli", (el) => {
+    const n = atmYagisliGunler().length;
+    atmIsik(el, !atm.tamam("ileri") ? "pasif" : n >= 3 ? "kritik" : n >= 1 ? "uyari" : "ok");
+  });
+
+  dash.draw("sensor-mgm", (el) => {
+    if (atm.bekle(el, "ileri")) return;
+    const f = atmMgmFark();
+    el.textContent = f === null ? "—" : f < 2 ? "Uyumlu" : f < 4 ? "Az farklı" : "Ayrışıyor";
+  });
+  dash.draw("sensor-mgm-alt", (el) => {
+    const r = atmYarin();
+    if (!r || atm.sayi(r.mgm_en_yuksek) === null) { el.textContent = "MGM tahmini yok"; return; }
+    el.textContent = "MGM " + atm.f0(+r.mgm_en_yuksek) + "°/" + atm.f0(+r.mgm_en_dusuk) + "° · biz " + atm.f0(+r.en_yuksek) + "°/" + atm.f0(+r.en_dusuk) + "°";
+  });
+  dash.draw("isik-mgm", (el) => {
+    const f = atmMgmFark();
+    atmIsik(el, f === null ? "pasif" : f < 2 ? "ok" : f < 4 ? "uyari" : "kritik");
+  });
+
+  function atmGunKarti(r, uzak) {
+    const kart = document.createElement("div");
+    kart.className = "atm-gun";
+    kart.id = "gun-" + r.tarih;
+    const yaz = (sinif, metin, alan) => {
+      const e = document.createElement("div");
+      e.className = sinif;
+      e.textContent = metin;
+      if (alan) { e.dataset.source = "ileri"; e.dataset.field = alan; e.dataset.where = atmYer(r); }
+      return e;
+    };
+    const g = atmGok(r);
+    const ikon = document.createElement("div");
+    ikon.className = "ikon";
+    ikon.append(atmIkon(g.tur, uzak ? 36 : 44, g.ad));
+    kart.append(yaz("ad", atmGunEtiketi(r)), yaz("tarih", atm.tarihKisa(r.tarih)), ikon, yaz("gok", g.ad));
+    const sic = document.createElement("div");
+    sic.className = "sic";
+    const mx = document.createElement("span"); mx.className = "max"; mx.textContent = atm.f0(+r.en_yuksek) + "°";
+    mx.dataset.source = "ileri"; mx.dataset.field = "en_yuksek"; mx.dataset.where = atmYer(r);
+    const mn = document.createElement("span"); mn.className = "min"; mn.textContent = atm.f0(+r.en_dusuk) + "°";
+    mn.dataset.source = "ileri"; mn.dataset.field = "en_dusuk"; mn.dataset.where = atmYer(r);
+    sic.append(mx, mn);
+    kart.append(sic);
+    const p = atm.sayi(r.yagis_olasiligi);
+    const yg = document.createElement("div");
+    yg.className = "yagis" + (p !== null && p >= 50 ? " yuksek" : "");
+    const damla = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    damla.setAttribute("viewBox", "0 0 10 14"); damla.setAttribute("width", "9"); damla.setAttribute("height", "12"); damla.setAttribute("aria-hidden", "true");
+    const yol = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    yol.setAttribute("d", "M5 0 C5 0 0 6 0 9 a5 5 0 0 0 10 0 C10 6 5 0 5 0z");
+    yol.style.fill = dash.colors[0];
+    damla.append(yol);
+    const yv = document.createElement("span");
+    yv.textContent = p === null ? "—" : "%" + atm.f0(p);
+    if (p !== null) { yv.dataset.source = "ileri"; yv.dataset.field = "yagis_olasiligi"; yv.dataset.where = atmYer(r); }
+    yg.append(damla, yv);
+    kart.append(yg);
+    if (atm.sayi(r.mgm_en_yuksek) !== null) {
+      const m = document.createElement("div");
+      m.className = "mgm";
+      m.textContent = "MGM " + atm.f0(+r.mgm_en_yuksek) + "° / " + atm.f0(+r.mgm_en_dusuk) + "°";
+      kart.append(m);
+    }
+    return kart;
+  }
+
+  dash.draw("serit-7", (el) => {
+    if (atm.bekle(el, "ileri", "Tahmin yüklenemedi.")) return;
+    el.replaceChildren(...atmSatir("ileri").filter((r) => +r.kac_gun_sonra <= 7).map((r) => atmGunKarti(r, false)));
+  });
+  dash.draw("serit-uzak", (el) => {
+    if (atm.bekle(el, "ileri", "Tahmin yüklenemedi.")) return;
+    const r = atmSatir("ileri").filter((r) => +r.kac_gun_sonra > 7);
+    if (!r.length) { el.textContent = "Daha uzak günler için tahmin yok."; return; }
+    el.replaceChildren(...r.map((x) => atmGunKarti(x, true)));
+  });
+
+  dash.draw("dikkat", (el) => {
+    if (atm.bekle(el, "ileri", "Tahmin yüklenemedi.")) return;
+    const s = atm.sayi;
+    const hafta = atmSatir("ileri").filter((r) => +r.kac_gun_sonra <= 7);
+    const maddeler = [];
+    const liste = (gunler) => gunler.map((r) => atmGunEtiketi(r)).join(", ");
+    const don = hafta.filter((r) => s(r.en_dusuk) !== null && +r.en_dusuk < 0);
+    if (don.length) {
+      const en = don.reduce((a, b) => (+b.en_dusuk < +a.en_dusuk ? b : a));
+      maddeler.push(["kar", "Don", liste(don) + (don.length > 1 ? " geceleri" : " gecesi") + " sıcaklık sıfırın altına iniyor; en soğuğu " + atmGunEtiketi(en) + " " + atm.f0(+en.en_dusuk) + "°. Araç camları buzlanabilir, sabah yollar kaygan olabilir."]);
+    }
+    const kar = hafta.filter((r) => atmGok(r).tur === "kar" && (s(r.yagis_olasiligi) || 0) >= 30);
+    if (kar.length) maddeler.push(["kar", "Kar", liste(kar) + " kar yağışı olabilir."]);
+    const yagmur = hafta.filter((r) => (s(r.yagis_olasiligi) || 0) >= 50 && !kar.includes(r));
+    if (yagmur.length) maddeler.push(["yagmur", "Yağmur", yagmur.map((r) => atmGunEtiketi(r) + " (%" + atm.f0(+r.yagis_olasiligi) + ")").join(", ") + ". Şemsiyenizi unutmayın."]);
+    for (let i = 1; i < hafta.length; i++) {
+      const fark = +hafta[i - 1].en_yuksek - +hafta[i].en_yuksek;
+      if (fark >= 6) maddeler.push(["bulut", "Ani soğuma", atmGunEtiketi(hafta[i - 1]) + " → " + atmGunEtiketi(hafta[i]) + ": gündüz sıcaklığı " + atm.f0(fark) + " derece düşüyor (" + atm.f0(+hafta[i - 1].en_yuksek) + "° → " + atm.f0(+hafta[i].en_yuksek) + "°)."]);
+    }
+    for (const r of hafta) {
+      if (s(r.mgm_en_yuksek) === null) continue;
+      for (const [ad, m, b] of [["gündüz", "mgm_en_yuksek", "en_yuksek"], ["gece", "mgm_en_dusuk", "en_dusuk"]]) {
+        if (Math.abs(+r[m] - +r[b]) >= 3) maddeler.push(["parcali", "Tahminler ayrışıyor", atmGunEtiketi(r) + (ad === "gece" ? " gecesi" : " gündüzü") + " için MGM " + atm.f0(+r[m]) + "°, biz " + atm.f0(+r[b]) + "° diyoruz. Bu " + (ad === "gece" ? "gecenin" : "günün") + " sıcaklığı belirsiz."]);
+      }
+    }
+    if (!maddeler.length) maddeler.push(["gunes", "Sakin bir hafta", "Önümüzdeki 7 gün için dikkat gerektiren bir durum görünmüyor."]);
+    el.replaceChildren(...maddeler.map(([ikon, baslik, metin]) => {
+      const li = document.createElement("li");
+      const i = document.createElement("span"); i.className = "ikon"; i.append(atmIkon(ikon, 34, baslik));
+      const m = document.createElement("div");
+      const b = document.createElement("b"); b.textContent = baslik;
+      const p = document.createElement("span"); p.textContent = metin;
+      m.append(b, p);
+      li.append(i, m);
+      return li;
+    }));
+  });
+</script>
+
+<script>
+  dash.draw("karne-durum", (el) => {
+    const kr = atmSatir("karne");
+    const bos = document.querySelectorAll("#karne-bos");
+    const tablo = document.querySelectorAll("#karne-tablo");
+    const dolu = kr.length > 0;
+    bos.forEach((n) => { n.hidden = dolu; });
+    tablo.forEach((n) => { n.hidden = !dolu; });
+  });
+
+  dash.draw("karne-satirlar", (el) => {
+    const k = { data: atmSatir("karne") };
+    const yuzde = (v) => (atm.sayi(v) === null ? "—" : "%" + atm.f0(+v));
+    el.replaceChildren(...k.data.map((r) => {
+      const tr = document.createElement("tr");
+      tr.dataset.key = r.sehir + "," + r.kac_gun_once;
+      const hucre = (metin, iyi) => { const td = document.createElement("td"); td.textContent = metin; if (iyi) td.className = "atm-iyi"; return td; };
+      const kucuk = (a, b) => atm.sayi(a) !== null && atm.sayi(b) !== null && +a < +b;
+      const buyuk = (a, b) => atm.sayi(a) !== null && atm.sayi(b) !== null && +a > +b;
+      tr.append(
+        hucre(r.kac_gun_once + " gün önce"),
+        hucre(atm.derece(r.en_yuksek_mgm_hata), kucuk(r.en_yuksek_mgm_hata, r.en_yuksek_bizim_hata)),
+        hucre(atm.derece(r.en_yuksek_bizim_hata), kucuk(r.en_yuksek_bizim_hata, r.en_yuksek_mgm_hata)),
+        hucre(atm.derece(r.en_dusuk_mgm_hata), kucuk(r.en_dusuk_mgm_hata, r.en_dusuk_bizim_hata)),
+        hucre(atm.derece(r.en_dusuk_bizim_hata), kucuk(r.en_dusuk_bizim_hata, r.en_dusuk_mgm_hata)),
+        hucre(yuzde(r["yagis_mgm_dogru_%"]), buyuk(r["yagis_mgm_dogru_%"], r["yagis_bizim_dogru_%"])),
+        hucre(yuzde(r["yagis_bizim_dogru_%"]), buyuk(r["yagis_bizim_dogru_%"], r["yagis_mgm_dogru_%"])),
+        hucre(String(r.en_yuksek_gun)));
+      return tr;
+    }));
+  });
+</script>
+
+<script>
+  (function () {
+    const gunStr = d3.utcFormat("%Y-%m-%d");
+    // Seçili aralık filtrelerden (bas, bit) gelir; boşsa son ölçüm gününden geriye 30 gün.
+    window.atmAralik = function () {
+      const t = atmSatir("gecmis");
+      const ilk = t.length ? t[0].tarih : null;
+      const son = t.length ? t[t.length - 1].tarih : null;
+      const enGec = son ? (+son.slice(0, 4) + 1) + "-12-31" : null;
+      const p = dash.params();
+      let bit = p.bit || son;
+      let bas = p.bas || (son ? gunStr(d3.utcDay.offset(atm.coz(son), -29)) : null);
+      if (bas && bit && bas > bit) [bas, bit] = [bit, bas];
+      return { bas, bit, ilk, son, enGec };
+    };
+    window.atmHazirAralik = function (tur) {
+      const a = atmAralik();
+      if (!a.son) return null;
+      const bugun = atm.coz(a.son);
+      if (tur === "tumu") return { bas: a.ilk, bit: a.son };
+      if (tur === "yil") return { bas: a.son.slice(0, 4) + "-01-01", bit: a.son };
+      if (tur === "ileri15") return { bas: gunStr(d3.utcDay.offset(bugun, 1)), bit: gunStr(d3.utcDay.offset(bugun, 14)) };
+      if (tur === "gelecek-ay") {
+        const ay = d3.utcMonth.offset(d3.utcMonth.floor(bugun), 1);
+        return { bas: gunStr(ay), bit: gunStr(d3.utcDay.offset(d3.utcMonth.offset(ay, 1), -1)) };
+      }
+      return { bas: gunStr(d3.utcDay.offset(bugun, -(+tur - 1))), bit: a.son };
+    };
+    window.atmGunNo = (s) => Math.round((Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10)) - Date.UTC(+s.slice(0, 4), 0, 1)) / 864e5) + 1;
+    // Gelecekteki bir gün için en iyi bilgi: tahmin varsa tahmin, yoksa geçmiş yıllara göre normal
+    window.atmBeklenen = function (tarih) {
+      const t = atmSatir("ileri").find((r) => r.tarih === tarih);
+      if (t) return { tur: "tahmin", r: t };
+      const r = atmSatir("iklim").find((k) => +k.gun_no === atmGunNo(tarih));
+      return r ? { tur: "normal", r } : null;
+    };
+  })();
+
+  dash.calc("aralik_ozet", {
+    inputs: ["gecmis"],
+    title: "Seçili aralığın ölçülen kısmının özeti",
+    description: "Seçilen başlangıç ve bitiş tarihleri arasındaki ölçümlerden ortalamalar, uç değerler ve toplam yağış.",
+    fn: (gecmisTum) => {
+      const p = dash.params();
+      const gecmis = gecmisTum.filter((d) => d.sehir === (p.sehir || "ankara"));
+      const son = gecmis.length ? gecmis[gecmis.length - 1].tarih : null;
+      let bit = p.bit || son;
+      let bas = p.bas || (son ? new Date(Date.parse(son) - 29 * 864e5).toISOString().slice(0, 10) : null);
+      if (bas > bit) [bas, bit] = [bit, bas];
+      const sayi = (v) => (v === null || v === undefined || v === "" ? null : +v);
+      const satirlar = gecmis.filter((d) => d.tarih >= bas && d.tarih <= bit);
+      const mx = satirlar.filter((d) => sayi(d.en_yuksek) !== null);
+      const mn = satirlar.filter((d) => sayi(d.en_dusuk) !== null);
+      const yg = satirlar.filter((d) => sayi(d.yagis_mm) !== null);
+      const ort = (r, alan) => (r.length ? Math.round((r.reduce((s, d) => s + +d[alan], 0) / r.length) * 10) / 10 : null);
+      const enSicak = mx.reduce((x, d) => (!x || +d.en_yuksek > +x.en_yuksek ? d : x), null);
+      const enSoguk = mn.reduce((x, d) => (!x || +d.en_dusuk < +x.en_dusuk ? d : x), null);
+      const olcumBit = son && bit > son ? son : bit;
+      return [{
+        baslangic: bas,
+        bitis: bit,
+        takvim_gunu: bas && olcumBit && olcumBit >= bas ? Math.round((Date.parse(olcumBit) - Date.parse(bas)) / 864e5) + 1 : 0,
+        olcumlu_gun: mx.length,
+        ortalama_en_yuksek: ort(mx, "en_yuksek"),
+        ortalama_en_dusuk: ort(mn, "en_dusuk"),
+        en_sicak: enSicak ? +enSicak.en_yuksek : null,
+        en_sicak_tarih: enSicak ? enSicak.tarih : null,
+        en_soguk: enSoguk ? +enSoguk.en_dusuk : null,
+        en_soguk_tarih: enSoguk ? enSoguk.tarih : null,
+        toplam_yagis: yg.length ? Math.round(yg.reduce((s, d) => s + +d.yagis_mm, 0) * 10) / 10 : null,
+        yagisli_gun: yg.filter((d) => +d.yagis_mm >= 1).length,
+        yagis_olcumlu_gun: yg.length,
+      }];
+    },
+  });
+
+  dash.calc("beklenti_ozet", {
+    inputs: ["gecmis", "ileri", "iklim"],
+    title: "Seçili aralığın gelecek kısmı için beklenti",
+    description: "Bugünden sonraki günler için: tahmini olan günlerde tahmin, ötesinde geçmiş yıllara göre normal kullanılarak beklenen ortalamalar, yağışlı gün ve don gecesi sayısı.",
+    fn: (gecmisTum, ileriTum, iklimTum) => {
+      const p = dash.params();
+      const sehir = p.sehir || "ankara";
+      const gecmis = gecmisTum.filter((d) => d.sehir === sehir);
+      const ileri = ileriTum.filter((d) => d.sehir === sehir);
+      const iklim = iklimTum.filter((d) => d.sehir === sehir);
+      const son = gecmis.length ? gecmis[gecmis.length - 1].tarih : null;
+      let bit = p.bit || son;
+      let bas = p.bas || (son ? new Date(Date.parse(son) - 29 * 864e5).toISOString().slice(0, 10) : null);
+      if (bas > bit) [bas, bit] = [bit, bas];
+      const bos = { gelecek_gun: 0, tahminli_gun: 0, normal_gun: 0, beklenen_ort_en_yuksek: null, beklenen_ort_en_dusuk: null, beklenen_yagisli_gun: null, beklenen_don_gecesi: null };
+      if (!son || bit <= son) return [bos];
+      const gunNo = (s) => Math.round((Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10)) - Date.UTC(+s.slice(0, 4), 0, 1)) / 864e5) + 1;
+      const tahmin = new Map(ileri.map((r) => [r.tarih, r]));
+      const normal = new Map(iklim.map((r) => [+r.gun_no, r]));
+      let t = Math.max(Date.parse(bas), Date.parse(son) + 864e5);
+      const sonT = Date.parse(bit);
+      let n = 0, nt = 0, nn = 0, smax = 0, smin = 0, yagis = 0, don = 0;
+      for (; t <= sonT; t += 864e5) {
+        const s = new Date(t).toISOString().slice(0, 10);
+        const f = tahmin.get(s);
+        if (f && f.en_yuksek !== null) {
+          nt++; smax += +f.en_yuksek; smin += +f.en_dusuk;
+          yagis += (f.yagis_olasiligi === null ? (normal.get(gunNo(s)) || {}).yagis_olasiligi || 0 : +f.yagis_olasiligi) / 100;
+          don += +f.en_dusuk < 0 ? 1 : 0;
+        } else {
+          const k = normal.get(gunNo(s));
+          if (!k) continue;
+          nn++; smax += +k.en_yuksek_ort; smin += +k.en_dusuk_ort; yagis += +k.yagis_olasiligi / 100; don += +k.don_olasiligi / 100;
+        }
+        n++;
+      }
+      if (!n) return [bos];
+      const r1 = (v) => Math.round(v * 10) / 10;
+      return [{ gelecek_gun: n, tahminli_gun: nt, normal_gun: nn, beklenen_ort_en_yuksek: r1(smax / n), beklenen_ort_en_dusuk: r1(smin / n),
+        beklenen_yagisli_gun: Math.round(yagis), beklenen_don_gecesi: Math.round(don) }];
+    },
+  });
+
+  document.querySelectorAll(".atm-hazir button").forEach((b) => {
+    b.addEventListener("click", () => {
+      const r = atmHazirAralik(b.dataset.gun);
+      if (r) dash.setParams(r);
+    });
+  });
+
+  dash.onData(() => {
+    const a = atmAralik();
+    document.querySelectorAll(".atm-hazir button").forEach((b) => {
+      const r = atmHazirAralik(b.dataset.gun);
+      const secili = !!r && r.bas === a.bas && r.bit === a.bit;
+      b.classList.toggle("secili", secili);
+      b.setAttribute("aria-pressed", String(secili));
+    });
+  });
+
+  function atmTarihAlani(alan) {
+    return (el) => {
+      if (!atm.tamam("gecmis") || !atmSatir("gecmis").length) { el.disabled = true; return; }
+      el.disabled = false;
+      const a = atmAralik();
+      el.min = a.ilk;
+      el.max = a.enGec;
+      if (document.activeElement !== el) el.value = a[alan];
+      el.onchange = () => {
+        if (el.value && el.validity.valid) {
+          const b = atmAralik();
+          dash.setParams({ bas: b.bas, bit: b.bit, [alan]: el.value });
+        }
+      };
+      el.onblur = () => { el.value = atmAralik()[alan]; };
+    };
+  }
+  dash.draw("tarih-bas", atmTarihAlani("bas"));
+  dash.draw("tarih-bit", atmTarihAlani("bit"));
+
+  dash.draw("aralik-metin", (el) => {
+    if (atm.bekle(el, "gecmis", "Ölçümler yüklenemedi.")) return;
+    const a = atmAralik();
+    const yil = (s) => (s.slice(0, 4) !== a.son.slice(0, 4) ? " " + s.slice(0, 4) : "");
+    el.textContent = a.bas ? atm.tarihUzun(a.bas) + yil(a.bas) + " – " + atm.tarihUzun(a.bit) + yil(a.bit) : "—";
+  });
+
+  dash.draw("aralik-gorunum", () => {
+    const o = dash.data("aralik_ozet"), b = dash.data("beklenti_ozet");
+    const olcum = o.status === "ok" && o.data && o.data.length && o.data[0].takvim_gunu > 0;
+    const ileri = b.status === "ok" && b.data && b.data.length && b.data[0].gelecek_gun > 0;
+    document.querySelectorAll("#aralik-istatistik, #olculen-baslik").forEach((n) => { n.hidden = !olcum; });
+    document.querySelectorAll("#beklenti-blok").forEach((n) => { n.hidden = !ileri; });
+  });
+
+  dash.draw("aralik-kapsam", (el) => {
+    el.replaceChildren();
+    const o = dash.data("aralik_ozet");
+    if (o.status !== "ok" || !o.data || !o.data.length || !o.data[0].takvim_gunu) return;
+    const r = o.data[0];
+    const k = (alan, metin) => { const b = document.createElement("b"); b.dataset.source = "aralik_ozet"; b.dataset.field = alan; b.dataset.row = "0"; b.textContent = metin; return b; };
+    const eksik = r.takvim_gunu - r.olcumlu_gun;
+    el.append(document.createTextNode("Geçmiş "), k("takvim_gunu", String(r.takvim_gunu)), document.createTextNode(" günün "),
+      k("olcumlu_gun", String(r.olcumlu_gun)), document.createTextNode(" tanesinde ölçüm var" + (eksik === 1 && atmAralik().bit >= atmAralik().son ? " (bugün henüz bitmediği için bugünün en yüksek sıcaklığı yok)." : eksik > 0 ? "; eksik günler arşivden kaynaklanıyor." : ".")));
+  });
+
+  dash.draw("beklenti-kapsam", (el) => {
+    el.replaceChildren();
+    const o = dash.data("beklenti_ozet");
+    if (o.status !== "ok" || !o.data || !o.data.length || !o.data[0].gelecek_gun) return;
+    const r = o.data[0];
+    const k = (alan, metin) => { const b = document.createElement("b"); b.dataset.source = "beklenti_ozet"; b.dataset.field = alan; b.dataset.row = "0"; b.textContent = metin; return b; };
+    const parca = [k("gelecek_gun", String(r.gelecek_gun)), document.createTextNode(" günün ")];
+    if (r.tahminli_gun) parca.push(k("tahminli_gun", String(r.tahminli_gun)), document.createTextNode(" tanesi tahmine"));
+    if (r.tahminli_gun && r.normal_gun) parca.push(document.createTextNode(", "));
+    if (r.normal_gun) parca.push(k("normal_gun", String(r.normal_gun)), document.createTextNode(" tanesi geçmiş yılların normaline"));
+    parca.push(document.createTextNode(" dayanıyor." + (r.normal_gun ? " Normale dayanan kısım, o günlerin genelde nasıl geçtiğini söyler; o yıl daha sıcak ya da soğuk geçebilir." : "")));
+    el.append(...parca);
+  });
+
+  function atmIstatistik(kaynak, alan, bicim) {
+    return (el) => {
+      const o = dash.data(kaynak);
+      if (o.status === "loading") { el.classList.add("dash-skeleton"); el.textContent = ""; return; }
+      el.classList.remove("dash-skeleton");
+      const v = o.status === "ok" && o.data && o.data.length ? o.data[0][alan] : null;
+      el.textContent = v === null || v === undefined ? "—" : bicim(v);
+    };
+  }
+  const atmTarihYil = (v) => atm.tarihUzun(v) + " " + v.slice(0, 4);
+  dash.draw("ist-ort-max", atmIstatistik("aralik_ozet", "ortalama_en_yuksek", atm.f1));
+  dash.draw("ist-ort-min", atmIstatistik("aralik_ozet", "ortalama_en_dusuk", atm.f1));
+  dash.draw("ist-max", atmIstatistik("aralik_ozet", "en_sicak", atm.f1));
+  dash.draw("ist-max-tarih", atmIstatistik("aralik_ozet", "en_sicak_tarih", atmTarihYil));
+  dash.draw("ist-min", atmIstatistik("aralik_ozet", "en_soguk", atm.f1));
+  dash.draw("ist-min-tarih", atmIstatistik("aralik_ozet", "en_soguk_tarih", atmTarihYil));
+  dash.draw("ist-yagis", atmIstatistik("aralik_ozet", "toplam_yagis", atm.f1));
+  dash.draw("ist-yagisli", atmIstatistik("aralik_ozet", "yagisli_gun", String));
+  dash.draw("bek-max", atmIstatistik("beklenti_ozet", "beklenen_ort_en_yuksek", atm.f1));
+  dash.draw("bek-min", atmIstatistik("beklenti_ozet", "beklenen_ort_en_dusuk", atm.f1));
+  dash.draw("bek-yagis", atmIstatistik("beklenti_ozet", "beklenen_yagisli_gun", String));
+  dash.draw("bek-don", atmIstatistik("beklenti_ozet", "beklenen_don_gecesi", String));
+
+  const ATM_GUNDUZ = () => dash.colors[1];
+  const ATM_GECE = () => dash.colors[0];
+  const ATM_BOLGE = { olcum: "Ölçülen", tahmin: "Tahmin", model: "Düşük güven", normal: "Normal (tahmin değil)" };
+
+  dash.draw("lejant-olcum", (el) => {
+    const a = atmAralik();
+    if (!a.son || !atm.tamam("gecmis")) { el.replaceChildren(); return; }
+    const ogeler = [["Gündüz en yüksek", ATM_GUNDUZ()], ["Gece en düşük", ATM_GECE()]];
+    const gun = (s) => Math.round((Date.parse(s) - Date.parse(a.son)) / 864e5);
+    if (a.bit > a.son) ogeler.push(["Açık renkli şerit: belirsizlik", ATM_GUNDUZ(), "band"]);
+    if (a.bit > a.son && Math.max(1, gun(a.bas)) <= 5) ogeler.push(["MGM tahmini", "var(--color-fg)", "halka"]);
+    const g = atmSatir("gecmis").filter((d) => d.tarih >= a.bas && d.tarih <= a.bit);
+    if (g.some((d) => atm.sayi(d.mgm_en_yuksek_1gun_once) !== null)) ogeler.push(["MGM'nin 1 gün önceki tahmini", "var(--color-fg)", "halka"]);
+    if (g.some((d) => atm.sayi(d.bizim_en_yuksek_1gun_once) !== null)) ogeler.push(["Bizim 1 gün önceki tahminimiz", "var(--color-fg-muted)", "nokta"]);
+    atm.lejant(el, ogeler);
+  });
+
+  dash.draw("grafik-olcum", (el) => {
+    if (atm.bekle(el, "gecmis", "Ölçümler yüklenemedi.")) return;
+    const a = atmAralik();
+    const s = atm.sayi;
+    const gunStr = d3.utcFormat("%Y-%m-%d");
+    const AYLAR = ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"];
+    const bas = atm.coz(a.bas), bit = d3.utcDay.offset(atm.coz(a.bit), 1);
+    const yarin = d3.utcDay.offset(atm.coz(a.son), 1);
+
+    // Her gün: geçmişte ölçüm; gelecekte tahmin (1-7), model (8-14) ya da normal
+    const gunler = [];
+    const gecmisMap = new Map(atmSatir("gecmis").map((d) => [d.tarih, d]));
+    for (let t = bas; t < bit; t = d3.utcDay.offset(t, 1)) {
+      const tarih = gunStr(t);
+      if (t < yarin) {
+        const d = gecmisMap.get(tarih);
+        gunler.push({ t0: t, tarih, tur: "olcum", max: d ? s(d.en_yuksek) : null, min: d ? s(d.en_dusuk) : null, yagis: d ? s(d.yagis_mm) : null, d });
+        continue;
+      }
+      const b = atmBeklenen(tarih);
+      if (!b) { gunler.push({ t0: t, tarih, tur: "normal", max: null, min: null }); continue; }
+      const r = b.r;
+      if (b.tur === "tahmin") {
+        gunler.push({ t0: t, tarih, tur: +r.kac_gun_sonra <= 7 ? "tahmin" : "model", max: s(r.en_yuksek), min: s(r.en_dusuk),
+          maxAlt: s(r.en_yuksek_alt), maxUst: s(r.en_yuksek_ust), minAlt: s(r.en_dusuk_alt), minUst: s(r.en_dusuk_ust), r });
+      } else {
+        gunler.push({ t0: t, tarih, tur: "normal", max: s(r.en_yuksek_ort), min: s(r.en_dusuk_ort),
+          maxAlt: s(r.en_yuksek_p10), maxUst: s(r.en_yuksek_p90), minAlt: s(r.en_dusuk_p10), minUst: s(r.en_dusuk_p90), r });
+      }
+    }
+    el.replaceChildren();
+    if (!gunler.some((g) => g.max !== null || g.min !== null)) { el.textContent = "Bu aralık için bilgi yok. Başka bir aralık seçin."; return; }
+
+    const takvim = gunler.length;
+    const birim = takvim <= 120 ? "gun" : takvim <= 3 * 366 ? "hafta" : "ay";
+    let noktalar;
+    if (birim === "gun") {
+      noktalar = gunler.map((g) => ({ ...g, t1: d3.utcDay.offset(g.t0, 1) }));
+    } else {
+      const aralik = birim === "hafta" ? d3.utcMonday : d3.utcMonth;
+      const gruplar = d3.group(gunler, (g) => +aralik.floor(g.t0));
+      noktalar = aralik.range(aralik.floor(bas), bit).map((t0) => {
+        const r = gruplar.get(+t0) || [];
+        const olcum = r.filter((g) => g.tur === "olcum"), ileri = r.filter((g) => g.tur !== "olcum");
+        const kume = olcum.length >= ileri.length ? olcum : ileri;
+        const mx = kume.map((g) => g.max).filter((v) => v !== null), mn = kume.map((g) => g.min).filter((v) => v !== null);
+        const tur = kume === olcum ? "olcum" : ileri.some((g) => g.tur === "normal") ? "normal" : ileri.some((g) => g.tur === "model") ? "model" : "tahmin";
+        const yg = olcum.map((g) => g.yagis).filter((v) => v !== null);
+        return { t0, t1: aralik.offset(t0, 1), tur, max: mx.length ? d3.mean(mx) : null, min: mn.length ? d3.mean(mn) : null,
+          n: mx.length, uc: mx.length ? d3.max(mx) : null, dip: mn.length ? d3.min(mn) : null, yagis: yg.length ? d3.sum(yg) : null };
+      });
+    }
+
+    const etiketli = birim === "gun" && takvim <= 16;
+    const W = el.clientWidth || 600, H = etiketli ? 300 : 280, m = { t: 30, r: 14, b: 28, l: 34 };
+    const svg = d3.select(el).append("svg").attr("viewBox", `0 0 ${W} ${H}`).attr("height", H)
+      .attr("role", "img").attr("aria-label", atmSehirAd() + " için " + atm.tarihUzun(a.bas) + " ile " + atm.tarihUzun(a.bit) + " arası gündüz en yüksek ve gece en düşük sıcaklıklar");
+    const x = d3.scaleUtc().domain([bas, bit]).range([m.l, W - m.r]);
+    const orta = (p) => x(new Date((+p.t0 + +p.t1) / 2));
+    const degerler = noktalar.flatMap((p) => [p.max, p.min, p.maxUst, p.minAlt,
+      p.d ? s(p.d.bizim_en_yuksek_1gun_once) : null, p.d ? s(p.d.mgm_en_yuksek_1gun_once) : null,
+      p.r ? s(p.r.mgm_en_yuksek) : null, p.r ? s(p.r.mgm_en_dusuk) : null]).filter((v) => v !== null && v !== undefined);
+    const [ya, yb] = d3.extent(degerler);
+    const pay = etiketli ? (yb - ya) * 0.12 + 1 : 0;
+    const y = d3.scaleLinear().domain([ya - pay, yb + pay]).nice().range([H - m.b, m.t]);
+
+    // Arka plan bölgeleri: ölçülen / tahmin / düşük güven / normal
+    const bolgeler = [];
+    for (const p of noktalar) {
+      const son = bolgeler[bolgeler.length - 1];
+      if (son && son.tur === p.tur) son.t1 = p.t1; else bolgeler.push({ tur: p.tur, t0: p.t0, t1: p.t1 });
+    }
+    const zemin = { olcum: 0, tahmin: 0.05, model: 0.09, normal: 0.13 };
+    const bg = svg.append("g");
+    for (const b of bolgeler) {
+      const x0 = x(b.t0), x1 = x(b.t1);
+      if (zemin[b.tur]) bg.append("rect").attr("x", x0).attr("width", x1 - x0).attr("y", m.t - 22).attr("height", H - m.b - m.t + 22)
+        .style("fill", "var(--color-fg)").attr("opacity", zemin[b.tur]);
+      if (x1 - x0 > 46) bg.append("text").attr("x", x0 + 4).attr("y", m.t - 10).text(ATM_BOLGE[b.tur])
+        .style("fill", "var(--color-fg-muted)").style("font-weight", "500");
+    }
+
+    const yEks = svg.append("g").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickSize(-(W - m.l - m.r)).tickFormat((v) => atm.f0(v) + "°"));
+    yEks.select(".domain").remove();
+    yEks.selectAll(".tick line").attr("stroke-opacity", 0.5);
+    const xEks = d3.axisBottom(x).ticks(Math.max(2, Math.floor((W - m.l) / 70))).tickSize(0).tickPadding(8).tickFormat((t) => {
+      if (takvim > 3 * 366) return t.getUTCMonth() === 0 ? String(t.getUTCFullYear()) : AYLAR[t.getUTCMonth()];
+      if (takvim > 120) return t.getUTCMonth() === 0 && t.getUTCDate() <= 7 ? AYLAR[0] + " " + t.getUTCFullYear() : AYLAR[t.getUTCMonth()];
+      return t.getUTCDate() + " " + AYLAR[t.getUTCMonth()];
+    });
+    svg.append("g").attr("transform", `translate(0,${H - m.b})`).call(xEks).select(".domain").remove();
+
+    // Belirsizlik şeritleri (yalnızca gelecek günlerde)
+    const seritli = (alt, ust) => (p) => p[alt] !== undefined && p[alt] !== null && p[ust] !== null;
+    svg.append("path").datum(noktalar).style("fill", ATM_GUNDUZ()).attr("opacity", 0.16)
+      .attr("d", d3.area().defined(seritli("maxAlt", "maxUst")).x(orta).y0((p) => y(p.maxAlt)).y1((p) => y(p.maxUst)));
+    svg.append("path").datum(noktalar).style("fill", ATM_GECE()).attr("opacity", 0.16)
+      .attr("d", d3.area().defined(seritli("minAlt", "minUst")).x(orta).y0((p) => y(p.minAlt)).y1((p) => y(p.minUst)));
+
+    // Çizgiler: her bölge kendi çizgi stiliyle, bir sonrakine bağlanarak
+    const STIL = { olcum: null, tahmin: null, model: "6 4", normal: "2 4" };
+    for (const [alan, renk] of [["max", ATM_GUNDUZ()], ["min", ATM_GECE()]]) {
+      noktalar.forEach((p, i) => {
+        const q = noktalar[i + 1];
+        if (!q || p[alan] === null || q[alan] === null) return;
+        svg.append("line").attr("x1", orta(p)).attr("y1", y(p[alan])).attr("x2", orta(q)).attr("y2", y(q[alan]))
+          .style("stroke", renk).attr("stroke-width", birim === "gun" && takvim > 60 ? 1.6 : 2.4).attr("stroke-linecap", "round")
+          .attr("stroke-dasharray", STIL[q.tur]);
+      });
+      if (takvim <= 60 || birim !== "gun") {
+        svg.append("g").selectAll("circle").data(noktalar.filter((p) => p[alan] !== null)).join("circle")
+          .attr("cx", orta).attr("cy", (p) => y(p[alan])).attr("r", etiketli ? 3.5 : 2.5)
+          .style("fill", (p) => (p.tur === "normal" ? "var(--color-bg)" : renk)).style("stroke", renk).attr("stroke-width", 1.5);
+      }
+      if (etiketli) {
+        svg.append("g").selectAll("text").data(noktalar.filter((p) => p[alan] !== null)).join("text")
+          .attr("x", orta).attr("y", (p) => y(p[alan]) + (alan === "max" ? -9 : 17)).attr("text-anchor", "middle")
+          .text((p) => atm.f0(p[alan]) + "°").style("fill", "var(--color-fg)").style("font-weight", "500");
+      }
+    }
+
+    // MGM ve 1 gün önceki tahminler
+    const halka = (veri, deger) => svg.append("g").selectAll("circle").data(veri).join("circle")
+      .attr("cx", orta).attr("cy", (p) => y(deger(p))).attr("r", 5).style("fill", "none").style("stroke", "var(--color-fg)").attr("stroke-width", 1.5);
+    if (birim === "gun") {
+      halka(noktalar.filter((p) => p.r && s(p.r.mgm_en_yuksek) !== null), (p) => s(p.r.mgm_en_yuksek));
+      halka(noktalar.filter((p) => p.r && s(p.r.mgm_en_dusuk) !== null), (p) => s(p.r.mgm_en_dusuk));
+      halka(noktalar.filter((p) => p.d && s(p.d.mgm_en_yuksek_1gun_once) !== null), (p) => s(p.d.mgm_en_yuksek_1gun_once));
+      svg.append("g").selectAll("circle").data(noktalar.filter((p) => p.d && s(p.d.bizim_en_yuksek_1gun_once) !== null)).join("circle")
+        .attr("cx", orta).attr("cy", (p) => y(s(p.d.bizim_en_yuksek_1gun_once))).attr("r", 3).style("fill", "var(--color-fg-muted)");
+    }
+
+    // İpucu
+    const ip = atm.ipucu(el);
+    const TUR_ADI = { olcum: "Ölçülen", tahmin: "Bizim tahmin", model: "Model tahmini (düşük güven)", normal: "Geçmiş yıllara göre normal (tahmin değil)" };
+    svg.append("g").selectAll("rect").data(noktalar).join("rect")
+      .attr("x", (p) => x(p.t0)).attr("width", (p) => Math.max(1, x(p.t1) - x(p.t0))).attr("y", m.t).attr("height", H - m.t - m.b).attr("fill", "transparent")
+      .on("pointerenter pointermove", (ev, p) => {
+        const [px, py] = d3.pointer(ev, el);
+        const yg = p.yagis === null || p.yagis === undefined ? "—" : atm.f1(p.yagis) + " mm";
+        if (birim === "gun") {
+          const baslik = atm.tarihUzun(p.tarih) + " " + p.tarih.slice(0, 4);
+          const satir = [TUR_ADI[p.tur]];
+          if (p.max === null && p.min === null) { ip.goster(px, py, baslik, ["Bilgi yok"]); return; }
+          satir.push("Gündüz " + atm.derece(p.max) + " °C, gece " + atm.derece(p.min) + " °C");
+          if (p.tur === "olcum") {
+            satir.push("Yağış: " + yg);
+            if (p.d && s(p.d.bizim_en_yuksek_1gun_once) !== null) satir.push("Bizim 1 gün önceki tahmin: " + atm.derece(p.d.bizim_en_yuksek_1gun_once) + " °C");
+            if (p.d && s(p.d.mgm_en_yuksek_1gun_once) !== null) satir.push("MGM'nin 1 gün önceki tahmini: " + atm.derece(p.d.mgm_en_yuksek_1gun_once) + " °C");
+          } else if (p.tur === "normal") {
+            satir.push("10 yılın 8'inde gündüz " + atm.derece(p.maxAlt) + " ile " + atm.derece(p.maxUst) + " °C arası",
+              "Yağış olasılığı %" + atm.f0(+p.r.yagis_olasiligi) + ", don olasılığı %" + atm.f0(+p.r.don_olasiligi));
+          } else {
+            satir.push("Modellerin aralığı: gündüz " + atm.derece(p.maxAlt) + "–" + atm.derece(p.maxUst) + ", gece " + atm.derece(p.minAlt) + "–" + atm.derece(p.minUst) + " °C");
+            if (s(p.r.mgm_en_yuksek) !== null) satir.push("MGM: gündüz " + atm.derece(p.r.mgm_en_yuksek) + ", gece " + atm.derece(p.r.mgm_en_dusuk) + " °C");
+            if (s(p.r.yagis_olasiligi) !== null) satir.push("Yağış olasılığı: %" + atm.f0(+p.r.yagis_olasiligi));
+          }
+          ip.goster(px, py, baslik, satir);
+        } else {
+          const son = d3.utcDay.offset(p.t1, -1);
+          const baslik = birim === "hafta"
+            ? p.t0.getUTCDate() + " " + AYLAR[p.t0.getUTCMonth()] + " – " + son.getUTCDate() + " " + AYLAR[son.getUTCMonth()] + " " + son.getUTCFullYear()
+            : AYLAR[p.t0.getUTCMonth()] + " " + p.t0.getUTCFullYear();
+          if (!p.n) { ip.goster(px, py, baslik, ["Bu dönem için bilgi yok"]); return; }
+          const satir = [TUR_ADI[p.tur], "Ortalama gündüz " + atm.derece(p.max) + " °C, gece " + atm.derece(p.min) + " °C"];
+          if (p.tur === "olcum") satir.push("En sıcak " + atm.derece(p.uc) + ", en soğuk " + atm.derece(p.dip) + " °C", "Toplam yağış: " + yg, p.n + " günlük ölçüm");
+          ip.goster(px, py, baslik, satir);
+        }
+      })
+      .on("pointerleave", () => ip.gizle());
+  });
+</script>
+
+<script>
+  const ATM_TEST = [
+    ["tmax_bizim_sistem", "Bizim sistem", 0, false],
+    ["tmax_ecmwf", "ECMWF (en iyi tek model)", 2, true],
+    ["tmax_model_ortalamasi", "6 modelin düz ortalaması", 3, true],
+  ];
+
+  dash.draw("lejant-test", (el) => {
+    atm.lejant(el, ATM_TEST.map(([, ad, i, kesik]) => [ad, dash.colors[i], kesik ? "kesik" : null]));
+  });
+
+  dash.draw("test-gun", (el) => {
+    if (atm.bekle(el, "test")) return;
+    const r = atmSatir("test").find((d) => +d.kac_gun_sonra === 1);
+    el.textContent = r ? String(r.tmax_gun) : "—";
+  });
+
+  dash.draw("test-ozet", (el) => {
+    el.replaceChildren();
+    if (!atm.tamam("test")) return;
+    const r = atmSatir("test").find((d) => +d.kac_gun_sonra === 1);
+    if (!r) return;
+    const k = (alan) => { const b = document.createElement("b"); b.dataset.source = "test"; b.dataset.field = alan; b.dataset.where = "sehir=" + r.sehir + "&kac_gun_sonra=1"; b.textContent = atm.f1(+r[alan]); return b; };
+    el.append(document.createTextNode("Ertesi günün en yüksek sıcaklığında bizim sistem ortalama "), k("tmax_bizim_sistem"),
+      document.createTextNode(" °C, en iyi tek model ECMWF "), k("tmax_ecmwf"), document.createTextNode(" °C yanıldı."));
+  });
+
+  dash.draw("grafik-test", (el) => {
+    if (atm.bekle(el, "test", "Test sonuçları yüklenemedi.")) return;
+    const veri = atmSatir("test").map((d) => ({ ...d, h: +d.kac_gun_sonra }));
+    if (!veri.length) { el.textContent = "Bu şehir için test sonucu yok."; return; }
+    el.replaceChildren();
+    const W = el.clientWidth || 600, H = 280, m = { t: 12, r: 16, b: 40, l: 40 };
+    const svg = d3.select(el).append("svg").attr("viewBox", `0 0 ${W} ${H}`).attr("height", H)
+      .attr("role", "img").attr("aria-label", "Tahmin edilen gün sayısına göre ortalama hata: bizim sistem ve diğer yöntemler");
+    const x = d3.scaleLinear().domain(d3.extent(veri, (d) => d.h)).range([m.l + 8, W - m.r - 8]);
+    const ymax = d3.max(veri, (d) => d3.max(ATM_TEST, ([a]) => +d[a]));
+    const y = d3.scaleLinear().domain([0, ymax]).nice().range([H - m.b, m.t]);
+    const yEks = svg.append("g").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickSize(-(W - m.l - m.r)).tickFormat(yerelBir));
+    function yerelBir(v) { return atm.f1(v); }
+    yEks.select(".domain").remove();
+    yEks.selectAll(".tick line").attr("stroke-opacity", 0.6);
+    svg.append("g").attr("transform", `translate(0,${H - m.b})`).call(d3.axisBottom(x).ticks(veri.length).tickSize(0).tickPadding(8).tickFormat(d3.format("d")))
+      .select(".domain").remove();
+    svg.append("text").attr("x", (m.l + W - m.r) / 2).attr("y", H - 6).attr("text-anchor", "middle").text("Kaç gün sonrası tahmin ediliyor");
+    for (const [alan, , i, kesik] of [...ATM_TEST].reverse()) {
+      svg.append("path").datum(veri).attr("fill", "none").style("stroke", dash.colors[i]).attr("stroke-width", kesik ? 1.6 : 2.8)
+        .attr("stroke-dasharray", kesik ? "5 4" : null).attr("d", d3.line().x((d) => x(d.h)).y((d) => y(+d[alan])));
+    }
+    svg.append("g").selectAll("circle").data(veri).join("circle").attr("cx", (d) => x(d.h)).attr("cy", (d) => y(+d.tmax_bizim_sistem)).attr("r", 3.5).style("fill", dash.colors[0]);
+    const ip = atm.ipucu(el);
+    const adim = (x(2) - x(1));
+    svg.append("g").selectAll("rect").data(veri).join("rect")
+      .attr("x", (d) => x(d.h) - adim / 2).attr("width", adim).attr("y", m.t).attr("height", H - m.t - m.b).attr("fill", "transparent")
+      .on("pointerenter pointermove", (ev, d) => {
+        const [px, py] = d3.pointer(ev, el);
+        ip.goster(px, py, d.h + " gün sonrası, ortalama hata", ATM_TEST.map(([a, ad]) => ad + ": " + atm.f1(+d[a]) + " °C"));
+      })
+      .on("pointerleave", () => ip.gizle());
+  });
+</script>

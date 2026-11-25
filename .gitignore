@@ -1,0 +1,9 @@
+.venv/
+yayin/
+android/anahtar.jks
+android/build/
+*.log
+__pycache__/
+HavaTahmini.apk
+Tahmin_Masasi.html
+*.png

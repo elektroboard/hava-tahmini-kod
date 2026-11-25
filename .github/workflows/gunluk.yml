@@ -1,0 +1,36 @@
+name: Günlük tahmin
+on:
+  schedule:
+    - cron: "30 4,11 * * *"   # 07:30 ve 14:30 (Türkiye saati, UTC+3)
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: gunluk
+jobs:
+  tahmin:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      TZ: Europe/Istanbul
+      MGM_KANAL: chromium
+      PYTHONIOENCODING: utf-8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: elektroboard/hava-tahmini-veri
+          token: ${{ secrets.YAYIN_ANAHTARI }}
+          path: yayin
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python -m playwright install --with-deps chromium
+      - run: git config --global user.name "tahmin-robotu" && git config --global user.email "robot@users.noreply.github.com" && git -C yayin config user.name "tahmin-robotu" && git -C yayin config user.email "robot@users.noreply.github.com"
+      - run: python gunluk.py
+      - name: Verileri depoya kaydet
+        if: always()
+        run: |
+          git add veri web
+          git diff --cached --quiet || (git commit -m "Veri $(date +%F\ %H:%M)" && git pull --rebase -q && git push)

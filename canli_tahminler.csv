@@ -1,0 +1,7 @@
+tarih,kac_gun_sonra,model_en_yuksek,model_en_dusuk,model_yagis_olasiligi_%,mgm_en_dusuk,mgm_en_yuksek,mgm_hadise,normal_en_yuksek,normal_en_dusuk,tahmin_tarihi
+2026-11-22,0,13.7,5.8,52,,,,11.8,2.5,2026-11-22
+2026-11-23,1,14.3,5.8,38,4.0,16.0,Parçalı Bulutlu,11.5,2.3,2026-11-22
+2026-11-24,2,13.7,4.1,30,9.0,11.0,Yağmurlu,11.3,2.2,2026-11-22
+2026-11-25,3,12.3,3.5,26,0.0,4.0,Parçalı Bulutlu,11.1,2.1,2026-11-22
+2026-11-26,4,12.4,3.4,39,-1.0,9.0,Puslu,10.9,1.9,2026-11-22
+2026-11-27,5,11.6,2.9,40,2.0,12.0,Puslu,10.8,1.8,2026-11-22
