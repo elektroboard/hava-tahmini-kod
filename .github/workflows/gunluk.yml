@@ -32,5 +32,5 @@ jobs:
       - name: Verileri depoya kaydet
         if: always()
         run: |
-          git add veri web
-          git diff --cached --quiet || (git commit -m "Veri $(date +%F\ %H:%M)" && git pull --rebase -q && git push)
+          git add -A
+          git diff --cached --quiet || (git commit -m "Veri $(date +%F\ %H:%M)" && git pull --rebase --autostash -q && git push)
