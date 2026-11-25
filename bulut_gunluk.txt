@@ -2,24 +2,15 @@
 -- Ankara
    yarın: -1.7°/7.4° (MGM -3.0/9.0), 14 gün tahmin, 2 karne satırı
 -- İstanbul
-   MGM okunamadı: Page.goto: net::ERR_TIMED_OUT at https://www.mgm.gov.tr/tahmin/il-ve-ilceler.aspx?il=%C4%B0stanbul
-Call log:
-  - navigating to "https://www.mgm.gov.tr/tahmin/il-ve-ilceler.aspx?il=%C4%B0stanbul", waiting until "domcontentloaded"
-
-   yarın: 4.5°/13.3° (MGM None/None), 14 gün tahmin, 2 karne satırı
+   MGM İstanbul deneme 1/3 başarısız: Page.goto: net::ERR_TIMED_OUT at https://www.mgm.gov.tr/tahmin/il-ve-ilceler.asp
+   yarın: 4.5°/13.3° (MGM 5.0/12.0), 14 gün tahmin, 2 karne satırı
 -- İzmir
+   MGM İzmir deneme 1/3 başarısız: Page.goto: net::ERR_TIMED_OUT at https://www.mgm.gov.tr/tahmin/il-ve-ilceler.asp
    yarın: 6.2°/17.0° (MGM 7.0/18.0), 14 gün tahmin, 1 karne satırı
 -- Konya
-   MGM okunamadı: Page.goto: net::ERR_TIMED_OUT at https://www.mgm.gov.tr/tahmin/il-ve-ilceler.aspx?il=Konya
-Call log:
-  - navigating to "https://www.mgm.gov.tr/tahmin/il-ve-ilceler.aspx?il=Konya", waiting until "domcontentloaded"
-
-   yarın: -3.9°/8.0° (MGM None/None), 14 gün tahmin, 1 karne satırı
-   yayın: GÖNDERİLEMEDİ /github.com/elektroboard/hava-tahmini-veri
- ! [remote rejected] HEAD -> main (fatal error in commit_refs_rules
-)
-error: failed to push some refs to 'https://github.com/elektroboard/hava-tahmini-veri'
-
+   MGM Konya deneme 1/3 başarısız: Page.goto: net::ERR_TIMED_OUT at https://www.mgm.gov.tr/tahmin/il-ve-ilceler.asp
+   yarın: -3.9°/8.0° (MGM -1.0/11.0), 14 gün tahmin, 1 karne satırı
+   yayın: gönderildi
 Tahmin_Masasi.html: 4796 KB
 Yayınlanan şehirler: Ankara, İstanbul, İzmir, Konya
-web/ dosyaları yazıldı: 56 ileri, 6 karne, 25720 gözlem satırı (19:05)
+web/ dosyaları yazıldı: 56 ileri, 6 karne, 25720 gözlem satırı (19:20)
