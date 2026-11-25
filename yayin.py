@@ -56,7 +56,14 @@ def yukle(ileri, bugun_usta=None):
             print("   yayın: değişiklik yok", flush=True)
             return True
         r = git("commit", "-m", f"Tahmin {datetime.now():%Y-%m-%d %H:%M}")
-        r = git("push", "origin", "HEAD")
+        import time
+        for deneme in range(4):
+            r = git("push", "origin", "HEAD")
+            if r.returncode == 0:
+                break
+            print(f"   yayın deneme {deneme + 1}/4 başarısız: {r.stderr[-120:]}", flush=True)
+            time.sleep(20)
+            git("pull", "--rebase", "-X", "theirs", "origin", "main")
         print("   yayın:", "gönderildi" if r.returncode == 0 else "GÖNDERİLEMEDİ " + r.stderr[-200:], flush=True)
         return r.returncode == 0
     except Exception as e:

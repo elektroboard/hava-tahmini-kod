@@ -6,6 +6,7 @@ gozlemler()   : bir istasyonun (WMO no) gerçekleşen günlük ölçümleri (Ogi
 import html
 import os
 import re
+import time
 from datetime import date, timedelta
 
 import pandas as pd
@@ -17,6 +18,19 @@ AYLAR = {"Ocak": 1, "Şubat": 2, "Mart": 3, "Nisan": 4, "Mayıs": 5, "Haziran": 
 
 
 def mgm_tahmin(bugun: date, il: str = "Ankara", konum: bool = False):
+    """Aralıklı yavaşlamaya karşı 3 deneme."""
+    son = None
+    for deneme in range(3):
+        try:
+            return _mgm_tahmin(bugun, il, konum)
+        except Exception as e:
+            son = e
+            print(f"   MGM {il} deneme {deneme + 1}/3 başarısız: {str(e)[:80]}", flush=True)
+            time.sleep(15)
+    raise son
+
+
+def _mgm_tahmin(bugun: date, il: str = "Ankara", konum: bool = False):
     """konum=True ise (tahmin, {"rakim", "enlem", "boylam"}) döner."""
     from playwright.sync_api import sync_playwright
 
@@ -24,7 +38,7 @@ def mgm_tahmin(bugun: date, il: str = "Ankara", konum: bool = False):
         kanal = os.environ.get("MGM_KANAL", "msedge")  # bulutta "chromium"
         tarayici = p.chromium.launch(headless=True) if kanal == "chromium" else p.chromium.launch(channel=kanal, headless=True)
         sayfa = tarayici.new_page()
-        sayfa.goto(MGM_URL + "?il=" + il, wait_until="domcontentloaded", timeout=60000)
+        sayfa.goto(MGM_URL + "?il=" + il, wait_until="domcontentloaded", timeout=90000)
         sayfa.wait_for_function(
             "() => [...document.querySelectorAll('tr')].filter(r => /\\d+ \\S+ \\S+/.test(r.innerText) && r.querySelector('img[title]')).length >= 5",
             timeout=60000)
