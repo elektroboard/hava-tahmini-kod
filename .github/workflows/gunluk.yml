@@ -28,7 +28,13 @@ jobs:
       - run: pip install -r requirements.txt
       - run: python -m playwright install --with-deps chromium
       - run: git config --global user.name "tahmin-robotu" && git config --global user.email "robot@users.noreply.github.com" && git -C yayin config user.name "tahmin-robotu" && git -C yayin config user.email "robot@users.noreply.github.com"
-      - run: python gunluk.py
+      - name: Tahmini üret ve yayınla
+        run: |
+          for i in 1 2 3; do
+            python gunluk.py && exit 0
+            echo "Deneme $i başarısız, 90 sn sonra tekrar"; sleep 90
+          done
+          exit 1
       - name: Verileri depoya kaydet
         if: always()
         run: |

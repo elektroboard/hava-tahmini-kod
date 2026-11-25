@@ -7,6 +7,7 @@ Her şehir ve her "kaç gün sonrası" (1-7) için ayrı model:
 """
 from pathlib import Path
 
+import time
 import numpy as np
 import pandas as pd
 import requests
@@ -145,13 +146,30 @@ def geriye_test(sehir):
 
 
 # ---------- canlı tahmin ----------
+def _al(url, params):
+    """Zaman aşımında (paylaşılan bulut adreslerinde olur) uzun bekleyip yeniden dener."""
+    son = None
+    for deneme in range(5):
+        try:
+            r = requests.get(url, params=params, timeout=120)
+            if r.status_code == 200:
+                return r
+            son = RuntimeError(f"HTTP {r.status_code}: {r.text[:120]}")
+        except requests.RequestException as e:
+            son = e
+        print(f"   Open-Meteo yanıt vermedi (deneme {deneme + 1}/5): {son}", flush=True)
+        time.sleep(20 * (deneme + 1))
+    raise son
+
+
+
 def guncel_modeller(sehir, bugun, gun=15, bas=1):
     b = SEHIRLER[sehir]
-    r = requests.get("https://api.open-meteo.com/v1/forecast", params={
+    r = _al("https://api.open-meteo.com/v1/forecast", params={
         "latitude": b["lat"], "longitude": b["lon"], "timezone": "Europe/Istanbul",
         "hourly": "temperature_2m,precipitation", "models": ",".join(MODELLER),
         "start_date": (pd.Timestamp(bugun) + pd.Timedelta(days=bas)).date().isoformat(),
-        "end_date": (pd.Timestamp(bugun) + pd.Timedelta(days=gun)).date().isoformat()}, timeout=60)
+        "end_date": (pd.Timestamp(bugun) + pd.Timedelta(days=gun)).date().isoformat()})
     r.raise_for_status()
     s = pd.DataFrame(r.json()["hourly"])
     s["gun"] = pd.to_datetime(s.pop("time")).dt.normalize()
@@ -169,10 +187,10 @@ def guncel_modeller(sehir, bugun, gun=15, bas=1):
 
 def hava_kodlari(sehir, bugun, gun=15):
     b = SEHIRLER[sehir]
-    r = requests.get("https://api.open-meteo.com/v1/forecast", params={
+    r = _al("https://api.open-meteo.com/v1/forecast", params={
         "latitude": b["lat"], "longitude": b["lon"], "timezone": "Europe/Istanbul", "daily": "weather_code",
         "models": "ecmwf_ifs025", "start_date": (pd.Timestamp(bugun) + pd.Timedelta(days=1)).date().isoformat(),
-        "end_date": (pd.Timestamp(bugun) + pd.Timedelta(days=gun)).date().isoformat()}, timeout=60)
+        "end_date": (pd.Timestamp(bugun) + pd.Timedelta(days=gun)).date().isoformat()})
     r.raise_for_status()
     d = r.json()["daily"]
     return {t: (int(k) if k is not None else None) for t, k in zip(d["time"], d["weather_code"])}
