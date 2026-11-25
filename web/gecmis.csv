@@ -4988,7 +4988,10 @@ ankara,2026-11-18,15.0,6.0,4.0,Ogimet SYNOP,,
 ankara,2026-11-19,15.1,8.2,0.1,Ogimet SYNOP,,
 ankara,2026-11-20,18.9,7.5,5.0,Ogimet SYNOP,,
 ankara,2026-11-21,12.4,7.5,8.3,Ogimet SYNOP,,
-ankara,2026-11-22,,5.0,,Ogimet SYNOP,,
+ankara,2026-11-22,12.0,5.0,0.0,Ogimet SYNOP,,
+ankara,2026-11-23,15.2,2.0,4.3,Ogimet SYNOP,14.8,17.0
+ankara,2026-11-24,11.2,2.0,,Ogimet SYNOP,11.7,11.0
+ankara,2026-11-25,,0.0,,Ogimet SYNOP,3.9,4.0
 istanbul,2003-01-01,13.4,4.0,,Meteostat,,
 istanbul,2003-01-02,6.8,3.6,,Meteostat,,
 istanbul,2003-01-03,11.8,6.0,,Meteostat,,
@@ -13561,7 +13564,10 @@ istanbul,2026-11-18,18.3,13.8,5.2,Ogimet SYNOP,,
 istanbul,2026-11-19,20.7,15.9,0.0,Ogimet SYNOP,,
 istanbul,2026-11-20,20.9,16.1,0.0,Ogimet SYNOP,,
 istanbul,2026-11-21,19.9,14.9,5.4,Ogimet SYNOP,,
-istanbul,2026-11-22,,10.9,,Ogimet SYNOP,,
+istanbul,2026-11-22,15.9,10.9,0.0,Ogimet SYNOP,,
+istanbul,2026-11-23,19.0,10.9,6.2,Ogimet SYNOP,19.7,19.0
+istanbul,2026-11-24,8.1,6.7,0.2,Ogimet SYNOP,12.4,9.0
+istanbul,2026-11-25,,2.1,,Ogimet SYNOP,9.5,9.0
 izmir,2003-11-21,21.5,,,Meteostat,,
 izmir,2003-11-22,21.0,10.6,0.0,Meteostat,,
 izmir,2003-11-23,20.7,10.5,0.0,Meteostat,,
@@ -18451,7 +18457,10 @@ izmir,2026-11-18,22.8,14.8,0.0,Ogimet SYNOP,,
 izmir,2026-11-19,26.2,16.8,0.0,Ogimet SYNOP,,
 izmir,2026-11-20,24.3,19.1,1.8,Ogimet SYNOP,,
 izmir,2026-11-21,22.3,19.1,0.0,Ogimet SYNOP,,
-izmir,2026-11-22,,11.9,,Ogimet SYNOP,,
+izmir,2026-11-22,21.1,11.9,0.0,Ogimet SYNOP,,
+izmir,2026-11-23,20.7,11.9,2.0,Ogimet SYNOP,,
+izmir,2026-11-24,18.3,12.4,0.0,Ogimet SYNOP,18.4,18.0
+izmir,2026-11-25,,6.9,,Ogimet SYNOP,15.0,15.0
 konya,2003-01-01,8.6,-2.3,,Meteostat,,
 konya,2003-01-02,6.8,0.9,,Meteostat,,
 konya,2003-01-03,7.6,0.0,0.0,Meteostat,,
@@ -25706,4 +25715,7 @@ konya,2026-11-18,18.4,1.9,0.0,Ogimet SYNOP,,
 konya,2026-11-19,18.6,1.9,0.0,Ogimet SYNOP,,
 konya,2026-11-20,21.4,4.6,0.0,Ogimet SYNOP,,
 konya,2026-11-21,21.0,4.6,0.0,Ogimet SYNOP,,
-konya,2026-11-22,,5.7,,Ogimet SYNOP,,
+konya,2026-11-22,13.8,5.7,0.0,Ogimet SYNOP,,
+konya,2026-11-23,19.9,-1.9,0.0,Ogimet SYNOP,,
+konya,2026-11-24,14.4,-1.9,3.0,Ogimet SYNOP,15.0,14.0
+konya,2026-11-25,,-0.9,,Ogimet SYNOP,5.6,7.0
