@@ -45,3 +45,4 @@ jobs:
         run: |
           git add -A
           git diff --cached --quiet || (git commit -m "Veri $(date +%F\ %H:%M)" && git pull --rebase --autostash -q && git push)
+# deneme 19:05
