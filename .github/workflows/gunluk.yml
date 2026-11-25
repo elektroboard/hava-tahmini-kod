@@ -3,6 +3,9 @@ on:
   schedule:
     - cron: "30 4,11 * * *"   # 07:30 ve 14:30 (Türkiye saati, UTC+3)
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/workflows/gunluk.yml"]
 permissions:
   contents: write
 concurrency: gunluk
