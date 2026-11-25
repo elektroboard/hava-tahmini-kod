@@ -32,9 +32,11 @@ jobs:
       - run: python -m playwright install --with-deps chromium
       - run: git config --global user.name "tahmin-robotu" && git config --global user.email "robot@users.noreply.github.com" && git -C yayin config user.name "tahmin-robotu" && git -C yayin config user.email "robot@users.noreply.github.com"
       - name: Tahmini üret ve yayınla
+        shell: bash
         run: |
+          : > bulut_gunluk.txt
           for i in 1 2 3; do
-            python gunluk.py && exit 0
+            python gunluk.py 2>&1 | tee -a bulut_gunluk.txt && exit 0
             echo "Deneme $i başarısız, 90 sn sonra tekrar"; sleep 90
           done
           exit 1
