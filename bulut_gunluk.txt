@@ -1,16 +1,16 @@
-== 2026-11-26
+== 2026-11-27
 -- Ankara
-   yarın: 0.1°/10.2° (MGM 0.0/12.0), 14 gün tahmin, 3 karne satırı
+   yarın: 2.5°/11.6° (MGM 4.0/13.0), 13 gün tahmin, 3 karne satırı
 -- İstanbul
    MGM İstanbul deneme 1/3 başarısız: Page.goto: net::ERR_TIMED_OUT at https://www.mgm.gov.tr/tahmin/il-ve-ilceler.asp
-   yarın: 8.4°/16.5° (MGM 10.0/16.0), 14 gün tahmin, 3 karne satırı
+   yarın: 9.6°/16.2° (MGM 11.0/17.0), 13 gün tahmin, 3 karne satırı
 -- İzmir
    MGM İzmir deneme 1/3 başarısız: Page.goto: net::ERR_TIMED_OUT at https://www.mgm.gov.tr/tahmin/il-ve-ilceler.asp
-   yarın: 9.2°/19.1° (MGM 10.0/19.0), 14 gün tahmin, 2 karne satırı
+   yarın: 10.0°/19.6° (MGM 11.0/19.0), 13 gün tahmin, 2 karne satırı
 -- Konya
    MGM Konya deneme 1/3 başarısız: Page.goto: net::ERR_TIMED_OUT at https://www.mgm.gov.tr/tahmin/il-ve-ilceler.asp
-   yarın: -0.8°/13.1° (MGM 5.0/16.0), 14 gün tahmin, 2 karne satırı
+   yarın: -0.7°/11.8° (MGM 4.0/15.0), 13 gün tahmin, 2 karne satırı
    yayın: gönderildi
-Tahmin_Masasi.html: 4798 KB
+Tahmin_Masasi.html: 4797 KB
 Yayınlanan şehirler: Ankara, İstanbul, İzmir, Konya
-web/ dosyaları yazıldı: 56 ileri, 10 karne, 25724 gözlem satırı (14:35)
+web/ dosyaları yazıldı: 52 ileri, 10 karne, 25724 gözlem satırı (07:35)
