@@ -4993,7 +4993,8 @@ ankara,2026-11-23,15.2,2.0,4.3,Ogimet SYNOP,14.8,17.0
 ankara,2026-11-24,11.2,2.0,,Ogimet SYNOP,11.7,11.0
 ankara,2026-11-25,5.2,0.0,0.0,Ogimet SYNOP,3.9,4.0
 ankara,2026-11-26,8.7,-3.1,0.0,Ogimet SYNOP,7.4,9.0
-ankara,2026-11-27,,-3.1,,Ogimet SYNOP,10.2,12.0
+ankara,2026-11-27,12.2,-3.1,0.0,Ogimet SYNOP,10.2,12.0
+ankara,2026-11-28,,0.8,,Ogimet SYNOP,11.8,12.0
 istanbul,2003-01-01,13.4,4.0,,Meteostat,,
 istanbul,2003-01-02,6.8,3.6,,Meteostat,,
 istanbul,2003-01-03,11.8,6.0,,Meteostat,,
@@ -13571,7 +13572,8 @@ istanbul,2026-11-23,19.0,10.9,6.2,Ogimet SYNOP,19.7,19.0
 istanbul,2026-11-24,8.1,6.7,0.2,Ogimet SYNOP,12.4,9.0
 istanbul,2026-11-25,10.4,2.1,0.0,Ogimet SYNOP,9.5,9.0
 istanbul,2026-11-26,14.8,2.1,0.0,Ogimet SYNOP,13.3,12.0
-istanbul,2026-11-27,,4.5,,Ogimet SYNOP,16.5,16.0
+istanbul,2026-11-27,16.7,4.5,0.0,Ogimet SYNOP,16.5,16.0
+istanbul,2026-11-28,,12.3,,Ogimet SYNOP,16.9,17.0
 izmir,2003-11-21,21.5,,,Meteostat,,
 izmir,2003-11-22,21.0,10.6,0.0,Meteostat,,
 izmir,2003-11-23,20.7,10.5,0.0,Meteostat,,
@@ -18466,7 +18468,8 @@ izmir,2026-11-23,20.7,11.9,2.0,Ogimet SYNOP,,
 izmir,2026-11-24,18.3,12.4,0.0,Ogimet SYNOP,18.4,18.0
 izmir,2026-11-25,14.1,6.9,0.0,Ogimet SYNOP,15.0,15.0
 izmir,2026-11-26,17.5,4.2,0.0,Ogimet SYNOP,17.0,18.0
-izmir,2026-11-27,,4.2,,Ogimet SYNOP,19.1,19.0
+izmir,2026-11-27,17.8,4.2,0.0,Ogimet SYNOP,19.1,19.0
+izmir,2026-11-28,,10.6,,Ogimet SYNOP,18.8,19.0
 konya,2003-01-01,8.6,-2.3,,Meteostat,,
 konya,2003-01-02,6.8,0.9,,Meteostat,,
 konya,2003-01-03,7.6,0.0,0.0,Meteostat,,
@@ -25726,4 +25729,5 @@ konya,2026-11-23,19.9,-1.9,0.0,Ogimet SYNOP,,
 konya,2026-11-24,14.4,-1.9,3.0,Ogimet SYNOP,15.0,14.0
 konya,2026-11-25,5.2,-0.9,0.0,Ogimet SYNOP,5.6,7.0
 konya,2026-11-26,7.8,-6.5,0.0,Ogimet SYNOP,8.0,11.0
-konya,2026-11-27,,-6.5,,Ogimet SYNOP,13.1,16.0
+konya,2026-11-27,14.8,-6.5,0.0,Ogimet SYNOP,13.1,16.0
+konya,2026-11-28,,-2.3,,Ogimet SYNOP,11.5,13.0
